@@ -28,6 +28,7 @@ services:
       - KEYCLOAK_DATABASE_NAME=keycloak
       - KEYCLOAK_DATABASE_USER=p2p_edu_user
       - KEYCLOAK_DATABASE_PASSWORD=p2p_edu_password
+      - KEYCLOAK_EXTRA_ARGS=--import-realm
     ports:
       - "8888:8080"
       - "8443:8443"
@@ -36,12 +37,12 @@ services:
       - 8443
     volumes:
       - keycloak-storage:/bitnami/keycloak
+      - ./docker/realms:/opt/bitnami/keycloak/data/import
 
   backend:
     build:
       context: ./
       dockerfile: ./Dockerfile
-
     networks:
       - p2p-education
     restart: "on-failure"
@@ -52,6 +53,15 @@ services:
       - JDBC_URL=jdbc:postgresql://postgresql:5432/p2p_education
       - JDBC_USERNAME=p2p_edu_user
       - JDBC_PASSWORD=p2p_edu_password
+      - SPRINGDOC_ENABLE=true
+      - KEYCLOAK_SERVER_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=p2p_education
+      - KEYCLOAK_CLIENT_ID=p2p_education_backend
+      - KEYCLOAK_CLIENT_SECRET=U6njn9vj7iHg5TTcHxIP1IEZIHwSri3x
+      - KEYCLOAK_ADMIN_REALM=master
+      - KEYCLOAK_ADMIN_CLIENT_ID=admin-cli
+      - KEYCLOAK_ADMIN_USERNAME=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
       - "8080:8080"
     expose:
