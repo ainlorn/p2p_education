@@ -1,0 +1,10 @@
+package com.midgetspinner31.p2pedu.service
+
+import com.midgetspinner31.p2pedu.dto.UserDto
+import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
+import java.util.UUID
+
+interface UserService {
+    fun register(registrationRequest: RegistrationRequest): UserDto
+    fun updateDetailsFromIdentityProvider(userId: UUID): UserDto
+}
