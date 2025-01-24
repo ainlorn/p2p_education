@@ -21,6 +21,10 @@ class UserServiceImpl(
     private val userMapper: UserMapper,
     private val ssoAdminService: SsoAdminService
 ) : UserService {
+    override fun getFullInfo(userId: UUID): UserDto {
+        return userMapper.toDto(userProvider.getById(userId))
+    }
+
     @Transactional
     override fun register(registrationRequest: RegistrationRequest): UserDto {
         val id = ssoAdminService.registerUser(userMapper.toKeycloakUserRepresentation(registrationRequest))

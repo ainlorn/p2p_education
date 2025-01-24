@@ -8,7 +8,10 @@ import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import java.util.UUID
 
-class AuthUtils {
+object AuthUtils {
+    fun getUserId(): UUID {
+        return getUserDetails().id
+    }
 
     fun getUserDetails(): JwtUserDetails {
         return getUserDetailsOrNull() ?: throw UnauthorizedException()
