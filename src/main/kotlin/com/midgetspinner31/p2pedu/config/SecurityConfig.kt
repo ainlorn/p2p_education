@@ -47,7 +47,12 @@ class SecurityConfig {
             }
             .cors { config -> config.disable() }
             .csrf { config -> config.disable() }
-            .authorizeHttpRequests { request -> request.anyRequest().permitAll() }
+            .authorizeHttpRequests { request ->
+                request
+                    .requestMatchers("/api/v1/auth/**").permitAll()
+                    .requestMatchers("/api/v1/**").authenticated()
+                    .anyRequest().permitAll()
+            }
             .logout { config -> config.disable() }
             .build()
     }
