@@ -11,6 +11,7 @@ val springCloudVersion by extra("2024.0.0")
 val keycloakVersion by extra("26.0.4")
 val springdocVersion by extra("2.8.3")
 val therapiVersion by extra("0.15.0")
+val feignVersion by extra("13.5")
 
 group = "com.midgetspinner31"
 version = "0.0.1-SNAPSHOT"
@@ -43,6 +44,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdocVersion")
     implementation("com.github.therapi:therapi-runtime-javadoc:$therapiVersion")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
+    implementation("io.github.openfeign:feign-httpclient:$feignVersion")
     implementation("org.keycloak:keycloak-admin-client:$keycloakVersion")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     runtimeOnly("org.postgresql:postgresql")

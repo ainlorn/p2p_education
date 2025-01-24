@@ -1,4 +1,4 @@
-package com.midgetspinner31.p2pedu.properties
+package com.midgetspinner31.p2pedu.sso.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.NestedConfigurationProperty

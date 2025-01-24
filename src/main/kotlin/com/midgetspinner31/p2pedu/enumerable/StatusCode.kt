@@ -16,6 +16,7 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     LOGIN_IN_USE(100, 400, "Логин уже используется"),
     EMAIL_IN_USE(101, 400, "Адрес электронной почты уже используется"),
     WRONG_CREDENTIALS(102, 400, "Неправильный логин или пароль"),
-    USER_NOT_FOUND(103, 404, "Пользователь не найден"),
-    ROLE_NOT_FOUND(104, 404, "Роль не найдена"),
+    INVALID_TOKEN(103, 400, "Некорректный токен"),
+    USER_NOT_FOUND(104, 404, "Пользователь не найден"),
+    ROLE_NOT_FOUND(105, 404, "Роль не найдена"),
 }

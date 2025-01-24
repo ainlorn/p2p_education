@@ -6,5 +6,6 @@ import java.util.UUID
 
 interface UserService {
     fun register(registrationRequest: RegistrationRequest): UserDto
-    fun updateDetailsFromIdentityProvider(userId: UUID): UserDto
+    fun updateDetailsFromSso(userId: UUID): UserDto
+    fun updateDetailsFromSso(jwt: String): UserDto
 }

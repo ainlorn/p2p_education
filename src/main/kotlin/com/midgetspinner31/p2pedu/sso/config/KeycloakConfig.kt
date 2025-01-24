@@ -1,6 +1,6 @@
-package com.midgetspinner31.p2pedu.config
+package com.midgetspinner31.p2pedu.sso.config
 
-import com.midgetspinner31.p2pedu.properties.KeycloakProperties
+import com.midgetspinner31.p2pedu.sso.properties.KeycloakProperties
 import org.keycloak.OAuth2Constants
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.admin.client.KeycloakBuilder

@@ -1,7 +1,7 @@
 package com.midgetspinner31.p2pedu.util
 
 
-import com.midgetspinner31.p2pedu.consts.AuthConsts
+import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.exception.UnauthorizedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt

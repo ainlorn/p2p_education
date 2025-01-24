@@ -1,6 +1,6 @@
 package com.midgetspinner31.p2pedu.mapper
 
-import com.midgetspinner31.p2pedu.consts.AuthConsts
+import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.UserDto
 import com.midgetspinner31.p2pedu.enumerable.UserRole

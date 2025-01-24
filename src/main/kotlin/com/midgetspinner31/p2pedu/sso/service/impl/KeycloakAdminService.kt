@@ -1,11 +1,11 @@
-package com.midgetspinner31.p2pedu.service.impl
+package com.midgetspinner31.p2pedu.sso.service.impl
 
-import com.midgetspinner31.p2pedu.exception.KeycloakException
+import com.midgetspinner31.p2pedu.sso.KeycloakException
 import com.midgetspinner31.p2pedu.exception.RoleNotFoundException
 import com.midgetspinner31.p2pedu.exception.UserNotFoundException
-import com.midgetspinner31.p2pedu.mapper.KeycloakErrorMapper
-import com.midgetspinner31.p2pedu.properties.KeycloakProperties
-import com.midgetspinner31.p2pedu.service.KeycloakAdminService
+import com.midgetspinner31.p2pedu.sso.KeycloakErrorMapper
+import com.midgetspinner31.p2pedu.sso.properties.KeycloakProperties
+import com.midgetspinner31.p2pedu.sso.service.SsoAdminService
 import jakarta.ws.rs.NotFoundException
 import jakarta.ws.rs.core.Response
 import org.keycloak.admin.client.Keycloak
@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class KeycloakAdminServiceImpl(
+class KeycloakAdminService(
     private val keycloak: Keycloak,
     private val keycloakProperties: KeycloakProperties,
     private val keycloakErrorMapper: KeycloakErrorMapper
-) : KeycloakAdminService {
+) : SsoAdminService {
     private val realm by lazy { keycloak.realm(keycloakProperties.realm) }
 
     override fun registerUser(user: UserRepresentation): UUID {

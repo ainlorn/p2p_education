@@ -1,4 +1,4 @@
-package com.midgetspinner31.p2pedu.consts
+package com.midgetspinner31.p2pedu.sso.consts
 
 object AuthConsts {
     object Attributes {

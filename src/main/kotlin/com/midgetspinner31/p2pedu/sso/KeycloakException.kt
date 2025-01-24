@@ -1,4 +1,4 @@
-package com.midgetspinner31.p2pedu.exception
+package com.midgetspinner31.p2pedu.sso
 
 class KeycloakException : RuntimeException {
     constructor(message: String?) : super(message)
