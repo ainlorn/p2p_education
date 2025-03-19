@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
-@Service
+@Service("@userService")
 class UserServiceImpl(
     private val jwtDecoder: JwtDecoder,
     private val userProvider: UserProvider,
@@ -54,6 +54,17 @@ class UserServiceImpl(
         val token = jwtDecoder.decode(jwt)
         val id = token.getClaimAsString(AuthConsts.Claims.ID) ?: throw RuntimeException("Invalid JWT token!")
         return updateDetailsFromSso(UUID.fromString(id))
+    }
+
+    override fun isMentor(userId: UUID): Boolean {
+        // TODO проверка на возможность наставничества
+        val user = userProvider.getById(userId)
+        return user.role == UserRole.ROLE_STUDENT
+    }
+
+    override fun isStudent(userId: UUID): Boolean {
+        val user = userProvider.getById(userId)
+        return user.role == UserRole.ROLE_STUDENT
     }
 
     companion object {

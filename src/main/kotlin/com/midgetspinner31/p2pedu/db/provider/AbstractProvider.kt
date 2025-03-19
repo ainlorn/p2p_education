@@ -11,43 +11,47 @@ abstract class AbstractProvider<TEntity : Any, TRepository : JpaRepository<TEnti
         return NotFoundException()
     }
 
-    fun getById(id: TID): TEntity {
-        return repository.findByIdOrNull(id) ?: throw notFoundException()
+    open fun getById(id: TID): TEntity {
+        return findById(id) ?: throw notFoundException()
     }
 
-    fun findById(id: TID): TEntity? {
+    open fun findById(id: TID): TEntity? {
         return repository.findByIdOrNull(id)
     }
 
-    fun findAll(): List<TEntity> {
+    open fun findAll(): List<TEntity> {
         return repository.findAll()
     }
 
-    fun existsById(id: TID): Boolean {
+    open fun existsById(id: TID): Boolean {
         return repository.existsById(id)
     }
 
-    fun save(entity: TEntity): TEntity {
+    open fun save(entity: TEntity): TEntity {
         return repository.save(entity)
     }
 
-    fun saveAll(entities: Iterable<TEntity>): Iterable<TEntity> {
+    open fun saveAll(entities: Iterable<TEntity>): Iterable<TEntity> {
         return repository.saveAll(entities)
     }
 
-    fun count(): Long {
+    open fun count(): Long {
         return repository.count()
     }
 
-    fun delete(entity: TEntity) {
+    open fun delete(entity: TEntity) {
         return repository.delete(entity)
     }
 
-    fun deleteAll(entities: Iterable<TEntity>) {
+    open fun deleteAll(entities: Iterable<TEntity>) {
         return repository.deleteAll(entities)
     }
 
-    fun deleteAll() {
+    open fun deleteAll() {
         return repository.deleteAll()
+    }
+
+    open fun flush() {
+        return repository.flush()
     }
 }

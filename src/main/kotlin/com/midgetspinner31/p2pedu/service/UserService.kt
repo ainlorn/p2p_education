@@ -9,4 +9,6 @@ interface UserService {
     fun register(registrationRequest: RegistrationRequest): UserDto
     fun updateDetailsFromSso(userId: UUID): UserDto
     fun updateDetailsFromSso(jwt: String): UserDto
+    fun isMentor(userId: UUID): Boolean
+    fun isStudent(userId: UUID): Boolean
 }

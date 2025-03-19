@@ -1,11 +1,11 @@
 package com.midgetspinner31.p2pedu.util
 
-
 import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.exception.UnauthorizedException
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
+import org.springframework.stereotype.Component
 import java.util.UUID
 
 object AuthUtils {
@@ -34,6 +34,21 @@ object AuthUtils {
 
     private fun Jwt.getClaimOrThrow(name: String): String {
         return getClaimAsString(name) ?: throw RuntimeException("Invalid JWT Token. Missing claim: $name")
+    }
+}
+
+@Component("auth")
+class AuthUtilsBean {
+    fun getUserId(): UUID {
+        return AuthUtils.getUserId()
+    }
+
+    fun getUserDetails(): JwtUserDetails {
+        return AuthUtils.getUserDetails()
+    }
+
+    fun getUserDetailsOrNull(): JwtUserDetails? {
+        return AuthUtils.getUserDetailsOrNull()
     }
 }
 

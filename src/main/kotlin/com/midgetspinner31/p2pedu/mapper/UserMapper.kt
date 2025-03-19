@@ -3,6 +3,7 @@ package com.midgetspinner31.p2pedu.mapper
 import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.UserDto
+import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
 import org.keycloak.representations.idm.CredentialRepresentation
@@ -65,6 +66,14 @@ class UserMapper {
             return@toDto UserDto(
                 id, username, email, role, firstName,
                 lastName, middleName, university, faculty, course
+            )
+        }
+    }
+
+    fun toPublicDto(user: User): UserPublicDto {
+        user.apply {
+            return@toPublicDto UserPublicDto(
+                id, firstName, lastName, middleName
             )
         }
     }
