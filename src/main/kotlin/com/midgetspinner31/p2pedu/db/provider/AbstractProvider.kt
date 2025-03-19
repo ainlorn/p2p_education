@@ -19,6 +19,10 @@ abstract class AbstractProvider<TEntity : Any, TRepository : JpaRepository<TEnti
         return repository.findByIdOrNull(id)
     }
 
+    fun findAll(): List<TEntity> {
+        return repository.findAll()
+    }
+
     fun existsById(id: TID): Boolean {
         return repository.existsById(id)
     }

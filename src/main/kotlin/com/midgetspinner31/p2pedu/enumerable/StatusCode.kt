@@ -19,4 +19,8 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     INVALID_TOKEN(103, 400, "Некорректный токен"),
     USER_NOT_FOUND(104, 404, "Пользователь не найден"),
     ROLE_NOT_FOUND(105, 404, "Роль не найдена"),
+
+    // subjects
+    SUBJECT_NOT_FOUND(200, 404, "Предмет не найден"),
+    SUBJECT_TOPIC_NOT_FOUND(200, 404, "Тема не найдена"),
 }
