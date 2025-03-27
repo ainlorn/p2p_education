@@ -40,6 +40,9 @@ class User {
     @Column(name = "role", nullable = false)
     var role: UserRole = UserRole.ROLE_STUDENT
 
+    @Column(name = "is_mentor", nullable = false)
+    var isMentor: Boolean = false
+
     @Column(name = "description", nullable = false)
     var description: String = ""
 

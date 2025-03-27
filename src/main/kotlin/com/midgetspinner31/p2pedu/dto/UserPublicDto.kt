@@ -7,4 +7,5 @@ data class UserPublicDto (
     var firstName: String?,
     var lastName: String?,
     var middleName: String?,
+    var isMentor: Boolean,
 )

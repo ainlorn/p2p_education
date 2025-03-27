@@ -64,7 +64,7 @@ class UserMapper {
     fun toDto(user: User): UserDto {
         user.apply {
             return@toDto UserDto(
-                id, username, email, role, firstName,
+                id, username, email, role, isMentor, firstName,
                 lastName, middleName, university, faculty, course
             )
         }
@@ -73,7 +73,7 @@ class UserMapper {
     fun toPublicDto(user: User): UserPublicDto {
         user.apply {
             return@toPublicDto UserPublicDto(
-                id, firstName, lastName, middleName
+                id, firstName, lastName, middleName, isMentor
             )
         }
     }

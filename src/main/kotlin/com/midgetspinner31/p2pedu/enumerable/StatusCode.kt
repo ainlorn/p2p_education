@@ -28,5 +28,10 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     ADVERT_NOT_FOUND(300, 404, "Объявление не найдено"),
     ADVERT_TOPIC_NOT_FOUND(301, 404, "Тема объявления не найдена"),
     ADVERT_RESPONSE_NOT_FOUND(302, 404, "Отклик на объявление не найден"),
-    ALREADY_RESPONDED(303, 400, "Вы уже откликнулись на объявление")
+    ALREADY_RESPONDED(303, 400, "Вы уже откликнулись на объявление"),
+
+    // mentor applications
+    MENTOR_APPLICATION_NOT_FOUND(400, 404, "Заявка не найдена"),
+    MENTOR_APPLICATION_ALREADY_PROCESSED(401, 400, "Заявка уже обработана"),
+    ALREADY_APPLIED(402, 400, "Заявка уже отправлена")
 }

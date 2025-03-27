@@ -57,9 +57,8 @@ class UserServiceImpl(
     }
 
     override fun isMentor(userId: UUID): Boolean {
-        // TODO проверка на возможность наставничества
         val user = userProvider.getById(userId)
-        return user.role == UserRole.ROLE_STUDENT
+        return user.role == UserRole.ROLE_STUDENT && user.isMentor
     }
 
     override fun isStudent(userId: UUID): Boolean {

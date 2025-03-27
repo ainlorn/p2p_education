@@ -12,6 +12,8 @@ data class UserDto(
     var email: String,
     /** Роль **/
     var role: UserRole,
+    /** Является ли пользователь наставником **/
+    var isMentor: Boolean,
     /** Имя **/
     var firstName: String?,
     /** Фамилия **/
