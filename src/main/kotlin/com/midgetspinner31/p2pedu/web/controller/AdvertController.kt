@@ -85,7 +85,7 @@ class AdvertController(
     }
 
     @GetMapping("/me/adverts")
-    @Operation(summary = "Получение информации по объявлениям, принадлежащих текцщему пользователю")
+    @Operation(summary = "Получение информации по объявлениям, принадлежащих текущему пользователю")
     fun getMyAdverts(): ListResponse<AdvertDto> {
         return ListResponse(advertService.getUserAdverts(AuthUtils.getUserId()))
     }

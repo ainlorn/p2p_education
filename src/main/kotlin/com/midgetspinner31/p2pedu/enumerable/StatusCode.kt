@@ -22,9 +22,11 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
 
     // subjects
     SUBJECT_NOT_FOUND(200, 404, "Предмет не найден"),
-    SUBJECT_TOPIC_NOT_FOUND(200, 404, "Тема не найдена"),
+    SUBJECT_TOPIC_NOT_FOUND(201, 404, "Тема не найдена"),
 
     // adverts
     ADVERT_NOT_FOUND(300, 404, "Объявление не найдено"),
-    ADVERT_TOPIC_NOT_FOUND(300, 404, "Тема объявления не найдена")
+    ADVERT_TOPIC_NOT_FOUND(301, 404, "Тема объявления не найдена"),
+    ADVERT_RESPONSE_NOT_FOUND(302, 404, "Отклик на объявление не найден"),
+    ALREADY_RESPONDED(303, 400, "Вы уже откликнулись на объявление")
 }
