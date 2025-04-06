@@ -32,4 +32,8 @@ class AdvertProvider(
     override fun findById(id: UUID): Advert? {
         return repository.findByIdNotDeleted(id)
     }
+
+    fun findAdvertByChatId(chatId: UUID): Advert? {
+        return repository.findAdvertByChatId(chatId)
+    }
 }

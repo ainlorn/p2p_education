@@ -2,6 +2,7 @@ package com.midgetspinner31.p2pedu.web.controller
 
 import com.midgetspinner31.p2pedu.dto.ChatDto
 import com.midgetspinner31.p2pedu.dto.ChatMessageDto
+import com.midgetspinner31.p2pedu.dto.MeetingDto
 import com.midgetspinner31.p2pedu.dto.MessageCreateDto
 import com.midgetspinner31.p2pedu.dto.message.UserMessageContent
 import com.midgetspinner31.p2pedu.enumerable.ChatMessageType
@@ -92,6 +93,15 @@ class ChatController(
     fun markRead(@PathVariable chatId: UUID, @RequestParam messageId: UUID): EmptyResponse {
         chatService.markRead(AuthUtils.getUserId(), chatId, messageId)
         return EmptyResponse()
+    }
+
+    @PostMapping("/chats/{chatId}/videoCall")
+    @Operation(summary = "Создание комнаты в BigBlueButton")
+    @PreAuthorize("@chatService.hasAccessToChat(@auth.userId, #chatId)")
+    fun createVideoCall(
+        @PathVariable chatId: UUID
+    ): ItemResponse<MeetingDto> {
+        return ItemResponse(chatService.createVideoCall(AuthUtils.getUserId(), chatId))
     }
 
 }

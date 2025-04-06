@@ -35,4 +35,10 @@ interface AdvertRepository : JpaRepository<Advert, UUID> {
         nativeQuery = true
     )
     fun findByIdNotDeleted(id: UUID): Advert?
+
+    @Query(
+        "select a.* from adverts a join advert_responses ar on a.id = ar.advert_id where ar.chat_id=:chatId",
+        nativeQuery = true
+    )
+    fun findAdvertByChatId(chatId: UUID): Advert?
 }

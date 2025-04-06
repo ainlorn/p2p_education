@@ -42,3 +42,4 @@ class MentorApplicationAlreadyProcessedException : ApiException(StatusCode.MENTO
 class AlreadyAppliedException : ApiException(StatusCode.ALREADY_APPLIED)
 class ChatNotFoundException : ApiException(StatusCode.CHAT_NOT_FOUND)
 class ChatMessageNotFoundException : ApiException(StatusCode.CHAT_MESSAGE_NOT_FOUND)
+class BBBApiException : ApiException(StatusCode.BBB_ERROR)

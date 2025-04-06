@@ -2,6 +2,7 @@ package com.midgetspinner31.p2pedu.service
 
 import com.midgetspinner31.p2pedu.dto.ChatDto
 import com.midgetspinner31.p2pedu.dto.ChatMessageDto
+import com.midgetspinner31.p2pedu.dto.MeetingDto
 import com.midgetspinner31.p2pedu.dto.MessageCreateDto
 import com.midgetspinner31.p2pedu.enumerable.ChatType
 import org.springframework.data.domain.Page
@@ -25,5 +26,7 @@ interface ChatService {
     fun getUnreadMessages(userId: UUID, chatId: UUID): List<ChatMessageDto>
 
     fun markRead(userId: UUID, chatId: UUID, messageId: UUID)
+
+    fun createVideoCall(userId: UUID, chatId: UUID): MeetingDto
 
 }

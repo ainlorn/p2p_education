@@ -3,17 +3,18 @@ package com.midgetspinner31.p2pedu.service.impl
 import com.midgetspinner31.p2pedu.db.entity.Chat
 import com.midgetspinner31.p2pedu.db.entity.ChatMessage
 import com.midgetspinner31.p2pedu.db.entity.ChatParticipant
-import com.midgetspinner31.p2pedu.db.provider.ChatMessageProvider
-import com.midgetspinner31.p2pedu.db.provider.ChatParticipantProvider
-import com.midgetspinner31.p2pedu.db.provider.ChatProvider
-import com.midgetspinner31.p2pedu.db.provider.UserProvider
+import com.midgetspinner31.p2pedu.db.provider.*
 import com.midgetspinner31.p2pedu.dto.ChatDto
 import com.midgetspinner31.p2pedu.dto.ChatMessageDto
+import com.midgetspinner31.p2pedu.dto.MeetingDto
 import com.midgetspinner31.p2pedu.dto.MessageCreateDto
+import com.midgetspinner31.p2pedu.dto.message.VideoChatCreatedMessageContent
+import com.midgetspinner31.p2pedu.enumerable.ChatMessageType
 import com.midgetspinner31.p2pedu.enumerable.ChatType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.mapper.ChatMapper
 import com.midgetspinner31.p2pedu.service.ChatService
+import com.midgetspinner31.p2pedu.service.MeetingService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -23,10 +24,12 @@ import java.util.*
 @Service("chatService")
 class ChatServiceImpl(
     private val userProvider: UserProvider,
+    private val advertProvider: AdvertProvider,
     private val chatProvider: ChatProvider,
     private val chatMessageProvider: ChatMessageProvider,
     private val chatParticipantProvider: ChatParticipantProvider,
     private val chatMapper: ChatMapper,
+    private val meetingService: MeetingService
 ) : ChatService {
 
     override fun hasAccessToChat(userId: UUID, chatId: UUID): Boolean {
@@ -115,5 +118,24 @@ class ChatServiceImpl(
         if (lastMessage == null || newMessage.createdOn > lastMessage.createdOn) {
             participant.lastReadMessageId = newMessage.id
         }
+    }
+
+    @Transactional
+    override fun createVideoCall(userId: UUID, chatId: UUID): MeetingDto {
+        val user = userProvider.getById(userId)
+        val chat = chatProvider.getById(chatId)
+        val participant = chatParticipantProvider.getByChatIdAndUserId(chat.id, user.id)
+        val advert = advertProvider.findAdvertByChatId(chat.id)
+
+        val meeting = meetingService.createMeeting(advert?.title ?: "Наставничество")
+        var message = ChatMessage().apply {
+            this.chatId = chat.id
+            this.type = ChatMessageType.VIDEO_CHAT_CREATED
+            this.content = VideoChatCreatedMessageContent(meeting.name, meeting.id, meeting.url, userId)
+        }
+        message = chatMessageProvider.save(message)
+        participant.lastReadMessageId = message.id
+
+        return meeting
     }
 }
