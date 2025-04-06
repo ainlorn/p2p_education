@@ -87,7 +87,7 @@ class ChatController(
     }
 
     @PostMapping("/chats/{chatId}/messages/markRead")
-    @Operation(summary = "Пометить сообщение прочитанным")
+    @Operation(summary = "Пометить сообщение (и все предыдущие сообщения) прочитанным")
     @PreAuthorize("@chatService.hasAccessToChat(@auth.userId, #chatId)")
     fun markRead(@PathVariable chatId: UUID, @RequestParam messageId: UUID): EmptyResponse {
         chatService.markRead(AuthUtils.getUserId(), chatId, messageId)
