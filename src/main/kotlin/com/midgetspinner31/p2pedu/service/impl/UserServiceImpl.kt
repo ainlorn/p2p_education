@@ -4,11 +4,13 @@ import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.UserDto
+import com.midgetspinner31.p2pedu.dto.UserProfileDto
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.mapper.UserMapper
 import com.midgetspinner31.p2pedu.sso.service.SsoAdminService
 import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
+import com.midgetspinner31.p2pedu.web.request.UpdateProfileRequest
 import org.springframework.security.oauth2.jwt.JwtDecoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -25,6 +27,10 @@ class UserServiceImpl(
         return userMapper.toDto(userProvider.getById(userId))
     }
 
+    override fun getProfileInfo(userId: UUID): UserProfileDto {
+        return userMapper.toProfileDto(userProvider.getById(userId))
+    }
+
     @Transactional
     override fun register(registrationRequest: RegistrationRequest): UserDto {
         val id = ssoAdminService.registerUser(userMapper.toKeycloakUserRepresentation(registrationRequest))
@@ -33,6 +39,13 @@ class UserServiceImpl(
         updateDetailsFromSso(user)
         user = userProvider.save(user)
         return userMapper.toDto(user)
+    }
+
+    @Transactional
+    override fun updateProfile(userId: UUID, request: UpdateProfileRequest): UserDto {
+        val user = userProvider.getById(userId)
+        user.description = request.description!!
+        return userMapper.toDto(userProvider.save(user))
     }
 
     private fun updateDetailsFromSso(user: User) {

@@ -25,5 +25,7 @@ data class UserDto(
     /** Программа подготовки **/
     var faculty: String?,
     /** Курс **/
-    var course: Int?
+    var course: Int?,
+    /** О себе **/
+    var description: String
 )

@@ -3,6 +3,7 @@ package com.midgetspinner31.p2pedu.mapper
 import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.UserDto
+import com.midgetspinner31.p2pedu.dto.UserProfileDto
 import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
@@ -65,7 +66,7 @@ class UserMapper {
         user.apply {
             return@toDto UserDto(
                 id, username, email, role, isMentor, firstName,
-                lastName, middleName, university, faculty, course
+                lastName, middleName, university, faculty, course, description
             )
         }
     }
@@ -74,6 +75,14 @@ class UserMapper {
         user.apply {
             return@toPublicDto UserPublicDto(
                 id, firstName, lastName, middleName, isMentor
+            )
+        }
+    }
+
+    fun toProfileDto(user: User): UserProfileDto {
+        user.apply {
+            return@toProfileDto UserProfileDto(
+                id, firstName, lastName, middleName, isMentor, description
             )
         }
     }
