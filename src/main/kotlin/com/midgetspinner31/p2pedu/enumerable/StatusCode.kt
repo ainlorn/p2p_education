@@ -33,5 +33,9 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     // mentor applications
     MENTOR_APPLICATION_NOT_FOUND(400, 404, "Заявка не найдена"),
     MENTOR_APPLICATION_ALREADY_PROCESSED(401, 400, "Заявка уже обработана"),
-    ALREADY_APPLIED(402, 400, "Заявка уже отправлена")
+    ALREADY_APPLIED(402, 400, "Заявка уже отправлена"),
+
+    // chats
+    CHAT_NOT_FOUND(500, 404, "Чат не найден"),
+    CHAT_MESSAGE_NOT_FOUND(501, 404, "Сообщение не найдено")
 }

@@ -26,4 +26,8 @@ class AdvertResponse {
 
     @Column(name = "create_dt", nullable = false, updatable = false)
     var createdOn: OffsetDateTime = OffsetDateTime.now()
+
+    @Column(name = "chat_id")
+    var chatId: UUID? = null
+
 }

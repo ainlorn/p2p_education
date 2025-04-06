@@ -11,5 +11,7 @@ data class AdvertResponseDto(
     /** Описание отклика **/
     var description: String,
     /** Дата создания **/
-    var createdOn: OffsetDateTime
+    var createdOn: OffsetDateTime,
+    /** Идентификатор чата, связанного с откликом **/
+    var chatId: UUID?,
 )

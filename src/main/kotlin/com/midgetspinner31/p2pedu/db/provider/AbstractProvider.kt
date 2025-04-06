@@ -19,6 +19,10 @@ abstract class AbstractProvider<TEntity : Any, TRepository : JpaRepository<TEnti
         return repository.findByIdOrNull(id)
     }
 
+    open fun findAllById(ids: Iterable<TID>): List<TEntity> {
+        return repository.findAllById(ids)
+    }
+
     open fun findAll(): List<TEntity> {
         return repository.findAll()
     }

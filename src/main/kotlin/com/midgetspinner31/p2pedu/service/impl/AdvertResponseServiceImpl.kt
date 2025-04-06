@@ -6,12 +6,14 @@ import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.AdvertResponseDto
 import com.midgetspinner31.p2pedu.dto.AdvertWithResponseDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
+import com.midgetspinner31.p2pedu.enumerable.ChatType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.exception.AlreadyRespondedException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.mapper.AdvertResponseMapper
 import com.midgetspinner31.p2pedu.service.AdvertResponseService
 import com.midgetspinner31.p2pedu.service.AdvertService
+import com.midgetspinner31.p2pedu.service.ChatService
 import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertResponseRequest
 import org.springframework.stereotype.Service
@@ -26,7 +28,8 @@ class AdvertResponseServiceImpl(
     private val advertService: AdvertService,
     private val advertResponseProvider: AdvertResponseProvider,
     private val advertMapper: AdvertMapper,
-    private val advertResponseMapper: AdvertResponseMapper
+    private val advertResponseMapper: AdvertResponseMapper,
+    private val chatService: ChatService
 ) : AdvertResponseService {
     override fun canCreateAdvertResponse(userId: UUID, advertId: UUID): Boolean {
         val user = userProvider.getById(userId)
@@ -77,7 +80,19 @@ class AdvertResponseServiceImpl(
             throw AlreadyRespondedException()
         }
 
+        val chat = chatService.createChat(
+            ChatType.DIRECT_MESSAGE,
+            listOf(
+                respondentId,
+                if (advert.type == AdvertType.STUDENT)
+                    advert.studentId!!
+                else
+                    advert.mentorId!!
+            )
+        )
+
         var advertResponse = advertResponseMapper.toAdvertResponse(advertId, respondentId, request)
+        advertResponse.chatId = chat.id
         advertResponse = advertResponseProvider.save(advertResponse)
 
         return advertResponseMapper.toDto(advertResponse, respondent)
