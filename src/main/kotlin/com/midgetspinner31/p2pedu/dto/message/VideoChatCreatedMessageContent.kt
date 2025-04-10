@@ -5,6 +5,5 @@ import java.util.*
 data class VideoChatCreatedMessageContent(
     var meetingName: String,
     var meetingId: String,
-    var meetingUrl: String,
     var starterUserId: UUID
 ) : ChatMessageContent

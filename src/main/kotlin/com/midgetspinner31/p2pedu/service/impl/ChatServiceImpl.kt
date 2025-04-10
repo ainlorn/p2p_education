@@ -127,11 +127,11 @@ class ChatServiceImpl(
         val participant = chatParticipantProvider.getByChatIdAndUserId(chat.id, user.id)
         val advert = advertProvider.findAdvertByChatId(chat.id)
 
-        val meeting = meetingService.createMeeting(advert?.title ?: "Наставничество")
+        val meeting = meetingService.createMeeting(chat.id, advert?.title ?: "Наставничество")
         var message = ChatMessage().apply {
             this.chatId = chat.id
             this.type = ChatMessageType.VIDEO_CHAT_CREATED
-            this.content = VideoChatCreatedMessageContent(meeting.name, meeting.id, meeting.url, userId)
+            this.content = VideoChatCreatedMessageContent(meeting.name, meeting.id, userId)
         }
         message = chatMessageProvider.save(message)
         participant.lastReadMessageId = message.id

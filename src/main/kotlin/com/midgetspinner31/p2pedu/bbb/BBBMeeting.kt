@@ -22,6 +22,7 @@ class BBBMeeting(
     var moderatorOnlyMessage: String? = null
     var autoStartRecording: Boolean? = null
     var allowStartStopRecording: Boolean? = null
+    var allowRequestsWithoutSession: Boolean? = null
     var webcamsOnlyForModerator: Boolean? = null
     var logo: String? = null
     var copyright: String? = null

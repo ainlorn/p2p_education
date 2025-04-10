@@ -40,5 +40,8 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     CHAT_MESSAGE_NOT_FOUND(501, 404, "Сообщение не найдено"),
 
     // big blue button
-    BBB_ERROR(600, 500, "Не удалось связаться с BigBlueButton")
+    BBB_ERROR(600, 500, "Не удалось связаться с BigBlueButton"),
+
+    // meetings
+    MEETING_NOT_FOUND(700, 404, "Собрание не найдено")
 }

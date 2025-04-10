@@ -78,6 +78,9 @@ class BBBApi(
             if (meeting.allowStartStopRecording != null) query.append(
                 "&allowStartStopRecording=" + meeting.allowStartStopRecording.toString()
             )
+            if (meeting.allowRequestsWithoutSession != null) query.append(
+                "&allowRequestsWithoutSession=" + meeting.allowRequestsWithoutSession.toString()
+            )
             if (meeting.webcamsOnlyForModerator != null) query.append(
                 "&webcamsOnlyForModerator=" + meeting.webcamsOnlyForModerator.toString()
             )
