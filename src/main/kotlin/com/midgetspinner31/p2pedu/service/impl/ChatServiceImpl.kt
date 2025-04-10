@@ -40,11 +40,13 @@ class ChatServiceImpl(
     }
 
     @Transactional
-    override fun createChat(type: ChatType, participants: List<UUID>): ChatDto {
+    override fun createChat(advertId: UUID, advertResponseId: UUID?, type: ChatType, participants: List<UUID>): ChatDto {
         val participantUsers = participants.map { userProvider.getById(it) }
 
         var chat = Chat().apply {
             this.type = type
+            this.advertId = advertId
+            this.advertResponseId = advertResponseId
         }
         chat = chatProvider.save(chat)
 

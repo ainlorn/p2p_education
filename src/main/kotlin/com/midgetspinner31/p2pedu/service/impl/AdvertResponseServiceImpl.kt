@@ -80,7 +80,12 @@ class AdvertResponseServiceImpl(
             throw AlreadyRespondedException()
         }
 
+        var advertResponse = advertResponseMapper.toAdvertResponse(advertId, respondentId, request)
+        advertResponse = advertResponseProvider.save(advertResponse)
+
         val chat = chatService.createChat(
+            advert.id,
+            advertResponse.id,
             ChatType.DIRECT_MESSAGE,
             listOf(
                 respondentId,
@@ -91,9 +96,7 @@ class AdvertResponseServiceImpl(
             )
         )
 
-        var advertResponse = advertResponseMapper.toAdvertResponse(advertId, respondentId, request)
         advertResponse.chatId = chat.id
-        advertResponse = advertResponseProvider.save(advertResponse)
 
         return advertResponseMapper.toDto(advertResponse, respondent)
     }

@@ -9,5 +9,9 @@ data class ChatDto(
     /** Тип чата **/
     var type: ChatType,
     /** Список участников чата **/
-    var participants: List<UserPublicDto>
+    var participants: List<UserPublicDto>,
+    /** Идентификатор объявления, связанного с чатом **/
+    var advertId: UUID,
+    /** Идентификатор отклика на объявление, связанное с чатом **/
+    var advertResponseId: UUID?
 )

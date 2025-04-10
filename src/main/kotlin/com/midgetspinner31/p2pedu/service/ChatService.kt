@@ -13,7 +13,7 @@ interface ChatService {
 
     fun hasAccessToChat(userId: UUID, chatId: UUID): Boolean
 
-    fun createChat(type: ChatType, participants: List<UUID>): ChatDto
+    fun createChat(advertId: UUID, advertResponseId: UUID?, type: ChatType, participants: List<UUID>): ChatDto
 
     fun getChat(chatId: UUID): ChatDto
 

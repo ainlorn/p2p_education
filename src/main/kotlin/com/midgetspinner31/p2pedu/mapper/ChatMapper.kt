@@ -16,7 +16,9 @@ class ChatMapper(
             return@toDto ChatDto(
                 id,
                 type,
-                participants.map { userMapper.toPublicDto(it) }
+                participants.map { userMapper.toPublicDto(it) },
+                advertId,
+                advertResponseId
             )
         }
     }

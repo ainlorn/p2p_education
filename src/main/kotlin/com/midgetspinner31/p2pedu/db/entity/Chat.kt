@@ -20,4 +20,9 @@ class Chat {
     @Column(name = "create_dt", nullable = false, updatable = false)
     var createdOn: OffsetDateTime = OffsetDateTime.now()
 
+    @Column(name = "advert_id", nullable = false)
+    lateinit var advertId: UUID
+
+    @Column(name = "advert_response_id")
+    var advertResponseId: UUID? = null
 }
