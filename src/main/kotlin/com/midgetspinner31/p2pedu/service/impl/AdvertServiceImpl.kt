@@ -6,6 +6,8 @@ import com.midgetspinner31.p2pedu.dto.AdvertDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertStatus
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
+import com.midgetspinner31.p2pedu.exception.AdvertNotActiveException
+import com.midgetspinner31.p2pedu.exception.AdvertNotInProgressException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.service.AdvertService
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
@@ -81,6 +83,10 @@ class AdvertServiceImpl(
         var advert = advertProvider.getById(advertId)
         val subject = subjectProvider.getById(request.subjectId!!)
 
+        if (advert.status != AdvertStatus.ACTIVE) {
+            throw AdvertNotActiveException()
+        }
+
         advertTopicProvider.deleteAllByAdvertId(advert.id)
         advertTopicProvider.flush()
         val topics = request.topicIds!!.map { advertMapper.toAdvertTopic(advert.id, subjectTopicProvider.getById(it).id) }
@@ -103,6 +109,11 @@ class AdvertServiceImpl(
     @Transactional
     override fun deleteAdvert(advertId: UUID) {
         val advert = advertProvider.getById(advertId)
+
+        if (advert.status != AdvertStatus.ACTIVE) {
+            throw AdvertNotActiveException()
+        }
+
         advert.status = AdvertStatus.DELETED
     }
 
@@ -112,4 +123,16 @@ class AdvertServiceImpl(
         mentorId?.let { id -> userProvider.getById(id) },
         studentId?.let { id -> userProvider.getById(id) },
     )
+
+    @Transactional
+    override fun finalizeAdvert(advertId: UUID): AdvertDto {
+        val advert = advertProvider.getById(advertId)
+
+        if (advert.status != AdvertStatus.IN_PROGRESS) {
+            throw AdvertNotInProgressException()
+        }
+
+        advert.status = AdvertStatus.FINISHED
+        return advert.toAdvertDto()
+    }
 }

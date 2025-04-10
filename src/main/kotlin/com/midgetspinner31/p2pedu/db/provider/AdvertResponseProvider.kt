@@ -30,6 +30,14 @@ class AdvertResponseProvider(
         return repository.findActiveByRespondentId(respondentId)
     }
 
+    fun findAcceptedByAdvertId(advertId: UUID): AdvertResponse? {
+        return repository.findAcceptedByAdvertId(advertId)
+    }
+
+    fun getAcceptedByAdvertId(advertId: UUID): AdvertResponse {
+        return findAcceptedByAdvertId(advertId) ?: throw notFoundException()
+    }
+
     fun existsByAdvertIdAndRespondentId(advertId: UUID, respondentId: UUID): Boolean {
         return repository.existsByAdvertIdAndRespondentId(advertId, respondentId)
     }

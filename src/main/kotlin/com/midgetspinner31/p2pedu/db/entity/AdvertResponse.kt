@@ -30,4 +30,6 @@ class AdvertResponse {
     @Column(name = "chat_id")
     var chatId: UUID? = null
 
+    @Column(name = "accepted", nullable = false)
+    var accepted: Boolean = false
 }

@@ -17,4 +17,5 @@ interface AdvertService {
     fun getUserAdverts(userId: UUID): List<AdvertDto>
     fun updateAdvert(advertId: UUID, request: UpdateAdvertRequest): AdvertDto
     fun deleteAdvert(advertId: UUID)
+    fun finalizeAdvert(advertId: UUID): AdvertDto
 }

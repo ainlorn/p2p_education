@@ -26,7 +26,8 @@ class AdvertResponseMapper(
                 userMapper.toPublicDto(respondent),
                 description,
                 createdOn,
-                chatId
+                chatId,
+                accepted
             )
         }
     }

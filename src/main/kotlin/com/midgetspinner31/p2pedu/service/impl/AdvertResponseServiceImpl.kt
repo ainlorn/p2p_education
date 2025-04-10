@@ -5,9 +5,12 @@ import com.midgetspinner31.p2pedu.db.provider.AdvertResponseProvider
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.AdvertResponseDto
 import com.midgetspinner31.p2pedu.dto.AdvertWithResponseDto
+import com.midgetspinner31.p2pedu.enumerable.AdvertStatus
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.enumerable.ChatType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
+import com.midgetspinner31.p2pedu.exception.AdvertNotActiveException
+import com.midgetspinner31.p2pedu.exception.AdvertResponseAcceptedException
 import com.midgetspinner31.p2pedu.exception.AlreadyRespondedException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.mapper.AdvertResponseMapper
@@ -76,6 +79,10 @@ class AdvertResponseServiceImpl(
         val advert = advertProvider.getById(advertId)
         val respondent = userProvider.getById(respondentId)
 
+        if (advert.status != AdvertStatus.ACTIVE) {
+            throw AdvertNotActiveException()
+        }
+
         if (advertResponseProvider.existsByAdvertIdAndRespondentId(advertId, respondentId)) {
             throw AlreadyRespondedException()
         }
@@ -104,6 +111,11 @@ class AdvertResponseServiceImpl(
     @Transactional
     override fun deleteAdvertResponse(advertId: UUID, advertResponseId: UUID) {
         val advertResponse = advertResponseProvider.getByAdvertIdAndId(advertId, advertResponseId)
+
+        if (advertResponse.accepted) {
+            throw AdvertResponseAcceptedException()
+        }
+
         advertResponseProvider.delete(advertResponse)
     }
 
@@ -120,5 +132,24 @@ class AdvertResponseServiceImpl(
             advertService.getAdvert(it.advertId),
             advertResponseMapper.toDto(it, userProvider.getById(it.respondentId))
         ) }
+    }
+
+    @Transactional
+    override fun acceptResponse(advertId: UUID, advertResponseId: UUID): AdvertResponseDto {
+        val advert = advertProvider.getById(advertId)
+
+        if (advert.status != AdvertStatus.ACTIVE) {
+            throw AdvertNotActiveException()
+        }
+
+        val response = advertResponseProvider.getByAdvertIdAndId(advertId, advertResponseId)
+        response.accepted = true
+        advert.status = AdvertStatus.IN_PROGRESS
+
+        if (advert.type == AdvertType.STUDENT) {
+            advert.mentorId = response.respondentId
+        }
+
+        return advertResponseMapper.toDto(response, userProvider.getById(response.respondentId))
     }
 }

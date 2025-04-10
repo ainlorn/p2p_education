@@ -15,4 +15,5 @@ interface AdvertResponseService {
     fun deleteAdvertResponse(advertId: UUID, advertResponseId: UUID)
     fun getResponsesForAdvert(advertId: UUID): List<AdvertResponseDto>
     fun getActiveResponsesForUser(userId: UUID): List<AdvertWithResponseDto>
+    fun acceptResponse(advertId: UUID, advertResponseId: UUID): AdvertResponseDto
 }

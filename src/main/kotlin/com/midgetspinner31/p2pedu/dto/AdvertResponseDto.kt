@@ -14,4 +14,5 @@ data class AdvertResponseDto(
     var createdOn: OffsetDateTime,
     /** Идентификатор чата, связанного с откликом **/
     var chatId: UUID?,
+    var accepted: Boolean
 )

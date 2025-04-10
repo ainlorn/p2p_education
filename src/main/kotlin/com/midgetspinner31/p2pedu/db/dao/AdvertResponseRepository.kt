@@ -14,10 +14,12 @@ interface AdvertResponseRepository : JpaRepository<AdvertResponse, UUID> {
     @Query(
         "select ar.* from advert_responses ar " +
         "join adverts a on ar.advert_id = a.id " +
-        "where a.status='ACTIVE' and ar.respondent_id=:respondentId",
+        "where (a.status='ACTIVE' or (a.status='IN_PROGRESS' and ar.accepted=true)) and ar.respondent_id=:respondentId",
         nativeQuery = true
     )
     fun findActiveByRespondentId(respondentId: UUID): List<AdvertResponse>
+
+    fun findAcceptedByAdvertId(advertId: UUID): AdvertResponse?
 
     fun existsByAdvertIdAndRespondentId(advertId: UUID, respondentId: UUID): Boolean
 

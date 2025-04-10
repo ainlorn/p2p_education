@@ -30,6 +30,13 @@ class AdvertResponseController(
         return ItemResponse(advertResponseService.getAdvertResponse(advertId, responseId))
     }
 
+    @PostMapping("/adverts/{advertId}/responses/{responseId}/accept")
+    @Operation(summary = "Принять отклик на объявление")
+    @PreAuthorize("@advertService.hasModifyAccess(@auth.userId, #advertId)")
+    fun acceptAdvertResponse(@PathVariable advertId: UUID, @PathVariable responseId: UUID): ItemResponse<AdvertResponseDto> {
+        return ItemResponse(advertResponseService.acceptResponse(advertId, responseId))
+    }
+
     @DeleteMapping("/adverts/{advertId}/responses/{responseId}")
     @Operation(summary = "Удаление отклика на объявление")
     @PreAuthorize("@advertResponseService.canEditResponse(@auth.userId, #responseId)")

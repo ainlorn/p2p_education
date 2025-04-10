@@ -9,9 +9,12 @@ import com.midgetspinner31.p2pedu.dto.ChatMessageDto
 import com.midgetspinner31.p2pedu.dto.MeetingDto
 import com.midgetspinner31.p2pedu.dto.MessageCreateDto
 import com.midgetspinner31.p2pedu.dto.message.VideoChatCreatedMessageContent
+import com.midgetspinner31.p2pedu.enumerable.AdvertStatus
 import com.midgetspinner31.p2pedu.enumerable.ChatMessageType
 import com.midgetspinner31.p2pedu.enumerable.ChatType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
+import com.midgetspinner31.p2pedu.exception.AdvertNotInProgressException
+import com.midgetspinner31.p2pedu.exception.AdvertResponseNotAcceptedException
 import com.midgetspinner31.p2pedu.mapper.ChatMapper
 import com.midgetspinner31.p2pedu.service.ChatService
 import com.midgetspinner31.p2pedu.service.MeetingService
@@ -25,6 +28,7 @@ import java.util.*
 class ChatServiceImpl(
     private val userProvider: UserProvider,
     private val advertProvider: AdvertProvider,
+    private val advertResponseProvider: AdvertResponseProvider,
     private val chatProvider: ChatProvider,
     private val chatMessageProvider: ChatMessageProvider,
     private val chatParticipantProvider: ChatParticipantProvider,
@@ -128,6 +132,17 @@ class ChatServiceImpl(
         val chat = chatProvider.getById(chatId)
         val participant = chatParticipantProvider.getByChatIdAndUserId(chat.id, user.id)
         val advert = advertProvider.findAdvertByChatId(chat.id)
+
+        if (advert != null && advert.status != AdvertStatus.IN_PROGRESS) {
+            throw AdvertNotInProgressException()
+        }
+
+        if (chat.advertResponseId != null) {
+            val advertResponse = advertResponseProvider.getById(chat.advertResponseId!!)
+            if (!advertResponse.accepted) {
+                throw AdvertResponseNotAcceptedException()
+            }
+        }
 
         val meeting = meetingService.createMeeting(chat.id, advert?.title ?: "Наставничество")
         var message = ChatMessage().apply {

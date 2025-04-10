@@ -84,6 +84,13 @@ class AdvertController(
         return EmptyResponse()
     }
 
+    @PostMapping("/adverts/{id}/finalize")
+    @Operation(summary = "Пометить объявление как завершенное")
+    @PreAuthorize("@advertService.hasModifyAccess(@auth.userId, #id)")
+    fun finalizeAdvert(@PathVariable id: UUID): ItemResponse<AdvertDto> {
+        return ItemResponse(advertService.finalizeAdvert(id))
+    }
+
     @GetMapping("/me/adverts")
     @Operation(summary = "Получение информации по объявлениям, принадлежащих текущему пользователю")
     fun getMyAdverts(): ListResponse<AdvertDto> {
