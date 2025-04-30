@@ -1,8 +1,10 @@
 package com.midgetspinner31.p2pedu.web.controller
 
 import com.midgetspinner31.p2pedu.dto.MentorApplicationDto
+import com.midgetspinner31.p2pedu.dto.UserProfileDto
 import com.midgetspinner31.p2pedu.enumerable.MentorApplicationState
 import com.midgetspinner31.p2pedu.service.MentorApplicationService
+import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.util.AuthUtils
 import com.midgetspinner31.p2pedu.web.annotation.ApiV1
 import com.midgetspinner31.p2pedu.web.request.MentorApplyRequest
@@ -19,9 +21,18 @@ import org.springframework.web.bind.annotation.RequestParam
 import java.util.UUID
 
 @ApiV1
-class MentorApplicationController(
+class MentorController(
+    private val userService: UserService,
     private val mentorApplicationService: MentorApplicationService
 ) {
+
+    @GetMapping("/mentors")
+    @Operation(summary = "Получение списка наставников")
+    @PreAuthorize("@userService.canViewUserList(@auth.userId)")
+    fun getMentors(): ListResponse<UserProfileDto> {
+        return ListResponse(userService.getMentors())
+    }
+
     @GetMapping("/mentor-applications")
     @Operation(summary = "Получение списка заявок на наставничество")
     @PreAuthorize("@mentorApplicationService.canViewApplications(@auth.userId)")

@@ -13,4 +13,8 @@ class UserProvider(
     override fun notFoundException(): RuntimeException {
         return UserNotFoundException()
     }
+
+    fun findAllMentors(): List<User> {
+        return repository.findAllMentors()
+    }
 }

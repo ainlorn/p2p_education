@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
-@Service("@userService")
+@Service("userService")
 class UserServiceImpl(
     private val jwtDecoder: JwtDecoder,
     private val userProvider: UserProvider,
@@ -77,6 +77,15 @@ class UserServiceImpl(
     override fun isStudent(userId: UUID): Boolean {
         val user = userProvider.getById(userId)
         return user.role == UserRole.ROLE_STUDENT
+    }
+
+    override fun getMentors(): List<UserProfileDto> {
+        return userProvider.findAllMentors().map { userMapper.toProfileDto(it) }
+    }
+
+    override fun canViewUserList(userId: UUID): Boolean {
+        val user = userProvider.getById(userId)
+        return user.role == UserRole.ROLE_TEACHER || user.role == UserRole.ROLE_ADMIN
     }
 
     companion object {

@@ -15,4 +15,6 @@ interface UserService {
     fun updateDetailsFromSso(jwt: String): UserDto
     fun isMentor(userId: UUID): Boolean
     fun isStudent(userId: UUID): Boolean
+    fun getMentors(): List<UserProfileDto>
+    fun canViewUserList(userId: UUID): Boolean
 }
