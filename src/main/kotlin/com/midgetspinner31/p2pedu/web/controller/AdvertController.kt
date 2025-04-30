@@ -46,6 +46,10 @@ class AdvertController(
         @RequestParam(required = false) query: String?,
         /** Тип объявления **/
         @RequestParam(required = false) type: AdvertType?,
+        /** Список id предметов **/
+        @RequestParam(required = false) subjects: List<UUID>?,
+        /** Список id тем **/
+        @RequestParam(required = false) topics: List<UUID>?,
         /** Номер страницы **/
         @RequestParam(required = false) pageNumber: Int?,
         /** Кол-во объявлений на странице **/
@@ -55,6 +59,8 @@ class AdvertController(
 
         return PageResponse(advertService.searchAdverts(
             query,
+            subjects,
+            topics,
             type,
             if (pageSize == null) {
                 Pageable.unpaged(sort)

@@ -59,9 +59,12 @@ class AdvertServiceImpl(
         return advert.toAdvertDto()
     }
 
-    override fun searchAdverts(query: String?, type: AdvertType?, pageable: Pageable): Page<AdvertDto> {
+    override fun searchAdverts(query: String?, subjects: List<UUID>?, topics: List<UUID>?,
+                               type: AdvertType?, pageable: Pageable): Page<AdvertDto> {
         return advertProvider.findAllByQuery(
             query,
+            subjects,
+            topics,
             listOf(AdvertStatus.ACTIVE),
             type?.let { listOf(type) } ?: AdvertType.entries,
             pageable

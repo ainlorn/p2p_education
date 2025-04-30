@@ -12,7 +12,8 @@ interface AdvertService {
     fun canCreateAdvert(userId: UUID): Boolean
     fun hasModifyAccess(userId: UUID, advertId: UUID): Boolean
     fun createAdvert(userId: UUID, request: CreateAdvertRequest): AdvertDto
-    fun searchAdverts(query: String?, type: AdvertType?, pageable: Pageable): Page<AdvertDto>
+    fun searchAdverts(query: String?, subjects: List<UUID>?, topics: List<UUID>?,
+                      type: AdvertType?, pageable: Pageable): Page<AdvertDto>
     fun getAdvert(advertId: UUID): AdvertDto
     fun getUserAdverts(userId: UUID): List<AdvertDto>
     fun updateAdvert(advertId: UUID, request: UpdateAdvertRequest): AdvertDto

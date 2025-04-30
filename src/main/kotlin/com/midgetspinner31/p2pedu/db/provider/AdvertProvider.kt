@@ -18,11 +18,22 @@ class AdvertProvider(
         return AdvertNotFoundException()
     }
 
-    fun findAllByQuery(query: String?,
-                       allowedStatus: Collection<AdvertStatus>,
-                       allowedType: Collection<AdvertType>,
-                       pageable: Pageable): Page<Advert> {
-        return repository.findAllByQuery(query, allowedStatus, allowedType, pageable)
+    fun findAllByQuery(
+        query: String?,
+        subjects: List<UUID>?,
+        topics: List<UUID>?,
+        allowedStatus: Collection<AdvertStatus>,
+        allowedType: Collection<AdvertType>,
+        pageable: Pageable
+    ): Page<Advert> {
+        return repository.findAllByQuery(
+            query,
+            if (subjects.isNullOrEmpty()) null else subjects,
+            if (topics.isNullOrEmpty()) null else topics,
+            allowedStatus,
+            allowedType,
+            pageable
+        )
     }
 
     fun findAllByUserId(userId: UUID): List<Advert> {

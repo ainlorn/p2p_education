@@ -11,14 +11,19 @@ import java.util.*
 
 interface AdvertRepository : JpaRepository<Advert, UUID> {
     @Query(
-        "select * from adverts " +
-        "where (:query is null or :query = '' or tsv @@ plainto_tsquery('ts_cfg', :query)) " +
-                "and status in :#{#allowedStatus.![name()]} " +
-                "and status != 'DELETED' " +
-                "and type in :#{#allowedType.![name()]}",
+        "select distinct a.* from adverts a " +
+        "join advert_topics t on a.id = t.advert_id " +
+        "where (:query is null or :query = '' or a.tsv @@ plainto_tsquery('ts_cfg', :query)) " +
+                "and a.status in :#{#allowedStatus.![name()]} " +
+                "and a.status != 'DELETED' " +
+                "and a.type in :#{#allowedType.![name()]} " +
+                "and (case when :#{#subjects == null} then TRUE else a.subject_id in (:subjects) end) " +
+                "and (case when :#{#topics == null} then TRUE else t.topic_id in (:topics) end)",
         nativeQuery = true
     )
     fun findAllByQuery(query: String?,
+                       subjects: List<UUID>?,
+                       topics: List<UUID>?,
                        allowedStatus: Collection<AdvertStatus>,
                        allowedType: Collection<AdvertType>,
                        pageable: Pageable): Page<Advert>
