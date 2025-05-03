@@ -78,6 +78,7 @@ class AdvertController(
 
     @PatchMapping("/adverts/{id}")
     @Operation(summary = "Редактирование информации об объявлении")
+    @PreAuthorize("@advertService.hasModifyAccess(@auth.userId, #id)")
     fun updateAdvert(@PathVariable id: UUID, @Valid @RequestBody request: UpdateAdvertRequest): ItemResponse<AdvertDto> {
         return ItemResponse(advertService.updateAdvert(id, request))
     }

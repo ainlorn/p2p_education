@@ -5,6 +5,6 @@ import java.util.*
 
 interface MeetingService {
     fun hasAccessToMeeting(userId: UUID, meetingId: UUID): Boolean
-    fun createMeeting(chatId: UUID, name: String): MeetingDto
+    fun createMeeting(chatId: UUID?, name: String): MeetingDto
     fun getMeetingUrl(userId: UUID, meetingId: UUID): String
 }

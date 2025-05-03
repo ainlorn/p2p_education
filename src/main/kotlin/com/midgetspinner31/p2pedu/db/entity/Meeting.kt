@@ -15,8 +15,8 @@ class Meeting {
     @Column(name = "id", nullable = false)
     var id: UUID = UUID.randomUUID()
 
-    @Column(name = "chat_id", nullable = false)
-    lateinit var chatId: UUID
+    @Column(name = "chat_id")
+    var chatId: UUID? = null
 
     @Column(name = "name", nullable = false)
     var name: String = ""

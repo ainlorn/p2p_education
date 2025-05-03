@@ -32,13 +32,12 @@ class MeetingServiceImpl(
     override fun hasAccessToMeeting(userId: UUID, meetingId: UUID): Boolean {
         val user = userProvider.getById(userId)
         val meeting = meetingProvider.getById(meetingId)
-        val chat = chatProvider.getById(meeting.chatId)
-        val chatParticipant = chatParticipantProvider.findByChatIdAndUserId(chat.id, user.id)
-        return user.role == UserRole.ROLE_ADMIN || chatParticipant != null
+        val chatParticipant = meeting.chatId?.let { chatParticipantProvider.findByChatIdAndUserId(it, user.id) }
+        return user.role == UserRole.ROLE_ADMIN || meeting.chatId == null || chatParticipant != null
     }
 
     @Transactional
-    override fun createMeeting(chatId: UUID, name: String): MeetingDto {
+    override fun createMeeting(chatId: UUID?, name: String): MeetingDto {
         val meetingId = UUID.randomUUID()
         val bbbMeeting = createBbbMeetingInternal(meetingId, name)
 
