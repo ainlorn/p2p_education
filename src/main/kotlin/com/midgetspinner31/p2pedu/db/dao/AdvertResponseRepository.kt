@@ -23,4 +23,6 @@ interface AdvertResponseRepository : JpaRepository<AdvertResponse, UUID> {
 
     fun existsByAdvertIdAndRespondentId(advertId: UUID, respondentId: UUID): Boolean
 
+    fun countByAdvertId(advertId: UUID): Int
+
 }

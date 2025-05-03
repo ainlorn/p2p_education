@@ -13,18 +13,22 @@ import java.util.*
 class AdvertMapper(
     private val userMapper: UserMapper,
 ) {
-    fun toDto(advert: Advert, advertTopics: List<AdvertTopic>, mentor: User?, student: User?): AdvertDto {
+    fun toDto(advert: Advert, advertTopics: List<AdvertTopic>, mentor: User?, student: User?, responseCount: Int): AdvertDto {
+        val mentorDto = mentor?.let { userMapper.toPublicDto(it) }
+        val studentDto = student?.let { userMapper.toPublicDto(it) }
         advert.apply {
             return@toDto AdvertDto(
                 id,
-                mentor?.let { userMapper.toPublicDto(it) },
-                student?.let { userMapper.toPublicDto(it) },
+                mentorDto,
+                studentDto,
+                if (type == AdvertType.MENTOR) mentorDto else studentDto,
                 title,
                 description,
                 subjectId,
                 advertTopics.map { it.topicId },
                 status,
                 type,
+                responseCount,
                 createdOn,
                 updatedOn
             )

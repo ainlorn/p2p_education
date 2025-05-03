@@ -12,6 +12,8 @@ data class AdvertDto(
     var mentor: UserPublicDto?,
     /** Профиль студента **/
     var student: UserPublicDto?,
+    /** Профиль создателя объявления **/
+    var creator: UserPublicDto?,
     /** Заголовок **/
     var title: String,
     /** Описание **/
@@ -24,6 +26,8 @@ data class AdvertDto(
     var status: AdvertStatus,
     /** Тип объявления **/
     var type: AdvertType,
+    /** Кол-во откликов на объявление **/
+    var responseCount: Int,
     /** Дата создания **/
     var createdOn: OffsetDateTime,
     /** Дата обновления **/

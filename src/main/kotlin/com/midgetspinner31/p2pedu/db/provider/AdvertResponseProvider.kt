@@ -41,4 +41,8 @@ class AdvertResponseProvider(
     fun existsByAdvertIdAndRespondentId(advertId: UUID, respondentId: UUID): Boolean {
         return repository.existsByAdvertIdAndRespondentId(advertId, respondentId)
     }
+
+    fun countByAdvertId(advertId: UUID): Int {
+        return repository.countByAdvertId(advertId)
+    }
 }

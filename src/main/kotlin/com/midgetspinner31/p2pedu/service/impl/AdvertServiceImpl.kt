@@ -22,6 +22,7 @@ import java.util.*
 @Service("advertService")
 class AdvertServiceImpl(
     private val advertProvider: AdvertProvider,
+    private val advertResponseProvider: AdvertResponseProvider,
     private val advertTopicProvider: AdvertTopicProvider,
     private val userProvider: UserProvider,
     private val subjectProvider: SubjectProvider,
@@ -125,6 +126,7 @@ class AdvertServiceImpl(
         advertTopicProvider.findByAdvertId(id),
         mentorId?.let { id -> userProvider.getById(id) },
         studentId?.let { id -> userProvider.getById(id) },
+        advertResponseProvider.countByAdvertId(id)
     )
 
     @Transactional
