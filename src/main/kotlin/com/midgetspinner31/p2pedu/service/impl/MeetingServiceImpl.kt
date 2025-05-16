@@ -61,6 +61,9 @@ class MeetingServiceImpl(
         bbbMeeting.meetingExpireIfNoUserJoinedInMinutes = 30
         bbbMeeting.meetingExpireWhenLastUserLeftInMinutes = 30
         bbbMeeting.allowRequestsWithoutSession = true
+        bbbMeeting.autoStartRecording = true
+        bbbMeeting.record = true
+        bbbMeeting.logoutURL = "https://peerfect.top"
 
         try {
             return bbbApi.createMeeting(bbbMeeting)
