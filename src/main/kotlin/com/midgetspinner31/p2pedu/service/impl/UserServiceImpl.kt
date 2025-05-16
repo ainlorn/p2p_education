@@ -2,6 +2,7 @@ package com.midgetspinner31.p2pedu.service.impl
 
 import com.midgetspinner31.p2pedu.sso.consts.AuthConsts
 import com.midgetspinner31.p2pedu.db.entity.User
+import com.midgetspinner31.p2pedu.db.provider.ReviewProvider
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.UserDto
 import com.midgetspinner31.p2pedu.dto.UserProfileDto
@@ -22,18 +23,19 @@ class UserServiceImpl(
     private val jwtDecoder: JwtDecoder,
     private val userProvider: UserProvider,
     private val userMapper: UserMapper,
-    private val ssoAdminService: SsoAdminService
+    private val ssoAdminService: SsoAdminService,
+    private val reviewProvider: ReviewProvider
 ) : UserService {
     override fun getFullInfo(userId: UUID): UserDto {
         return userMapper.toDto(userProvider.getById(userId))
     }
 
     override fun getProfileInfo(userId: UUID): UserProfileDto {
-        return userMapper.toProfileDto(userProvider.getById(userId))
+        return userMapper.toProfileDto(userProvider.getById(userId), reviewProvider.getAverageRatingByRevieweeId(userId))
     }
 
     override fun getPublicInfo(userId: UUID): UserPublicDto {
-        return userMapper.toPublicDto(userProvider.getById(userId))
+        return userMapper.toPublicDto(userProvider.getById(userId), reviewProvider.getAverageRatingByRevieweeId(userId))
     }
 
     @Transactional
@@ -85,7 +87,7 @@ class UserServiceImpl(
     }
 
     override fun getMentors(): List<UserProfileDto> {
-        return userProvider.findAllMentors().map { userMapper.toProfileDto(it) }
+        return userProvider.findAllMentors().map { userMapper.toProfileDto(it, reviewProvider.getAverageRatingByRevieweeId(it.id)) }
     }
 
     override fun canViewUserList(userId: UUID): Boolean {

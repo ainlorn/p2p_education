@@ -71,18 +71,18 @@ class UserMapper {
         }
     }
 
-    fun toPublicDto(user: User): UserPublicDto {
+    fun toPublicDto(user: User, rating: Double?): UserPublicDto {
         user.apply {
             return@toPublicDto UserPublicDto(
-                id, firstName, lastName, middleName, isMentor
+                id, firstName, lastName, middleName, isMentor, rating
             )
         }
     }
 
-    fun toProfileDto(user: User): UserProfileDto {
+    fun toProfileDto(user: User, rating: Double?): UserProfileDto {
         user.apply {
             return@toProfileDto UserProfileDto(
-                id, firstName, lastName, middleName, isMentor, description
+                id, firstName, lastName, middleName, isMentor, description, rating
             )
         }
     }

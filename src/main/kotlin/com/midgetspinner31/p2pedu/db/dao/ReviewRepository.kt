@@ -21,6 +21,6 @@ interface ReviewRepository : JpaRepository<Review, UUID> {
     fun existsByReviewerIdAndAdvertId(reviewerId: UUID, advertId: UUID): Boolean
 
     @Query(value = "select avg(rating) from reviews where reviewee_id=:revieweeId", nativeQuery = true)
-    fun getAverageRatingByRevieweeId(revieweeId: UUID): Double
+    fun getAverageRatingByRevieweeId(revieweeId: UUID): Double?
 
 }
