@@ -1,6 +1,7 @@
 package com.midgetspinner31.p2pedu.service
 
 import com.midgetspinner31.p2pedu.dto.AdvertDto
+import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
 import com.midgetspinner31.p2pedu.web.request.UpdateAdvertRequest
@@ -15,6 +16,7 @@ interface AdvertService {
     fun searchAdverts(query: String?, subjects: List<UUID>?, topics: List<UUID>?,
                       type: AdvertType?, pageable: Pageable): Page<AdvertDto>
     fun getAdvert(advertId: UUID): AdvertDto
+    fun getPublicInfo(advertId: UUID): AdvertPublicDto
     fun getUserAdverts(userId: UUID): List<AdvertDto>
     fun updateAdvert(advertId: UUID, request: UpdateAdvertRequest): AdvertDto
     fun deleteAdvert(advertId: UUID)

@@ -33,6 +33,7 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     ADVERT_RESPONSE_NOT_ACCEPTED(305, 400, "Отклик на объявление не принят"),
     ADVERT_RESPONSE_ACCEPTED(306, 400, "Отклик на объявление уже принят"),
     ADVERT_NOT_IN_PROGRESS(307, 400, "Объявление не находится в работе"),
+    ADVERT_NOT_FINISHED(308, 400, "Объявление находится в работе"),
 
     // mentor applications
     MENTOR_APPLICATION_NOT_FOUND(400, 404, "Заявка не найдена"),
@@ -50,5 +51,10 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
     MEETING_NOT_FOUND(700, 404, "Собрание не найдено"),
 
     // group meetings
-    GROUP_MEETING_NOT_FOUND(800, 404, "Групповая встреча не найдена")
+    GROUP_MEETING_NOT_FOUND(800, 404, "Групповая встреча не найдена"),
+
+    // reviews
+    REVIEW_NOT_FOUND(900, 404, "Отзыв не найден"),
+    REVIEW_ALREADY_EXISTS(901, 400, "Отзыв на это объявление уже написан")
+
 }

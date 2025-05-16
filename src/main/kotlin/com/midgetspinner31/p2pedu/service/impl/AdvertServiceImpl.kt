@@ -3,6 +3,7 @@ package com.midgetspinner31.p2pedu.service.impl
 import com.midgetspinner31.p2pedu.db.entity.Advert
 import com.midgetspinner31.p2pedu.db.provider.*
 import com.midgetspinner31.p2pedu.dto.AdvertDto
+import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertStatus
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.enumerable.UserRole
@@ -76,6 +77,9 @@ class AdvertServiceImpl(
         return advertProvider.getById(advertId).toAdvertDto()
     }
 
+    override fun getPublicInfo(advertId: UUID): AdvertPublicDto {
+        return advertProvider.getById(advertId).toPublicDto()
+    }
 
     override fun getUserAdverts(userId: UUID): List<AdvertDto> {
         val user = userProvider.getById(userId)
@@ -127,6 +131,12 @@ class AdvertServiceImpl(
         mentorId?.let { id -> userProvider.getById(id) },
         studentId?.let { id -> userProvider.getById(id) },
         advertResponseProvider.countByAdvertId(id)
+    )
+
+    private fun Advert.toPublicDto() = advertMapper.toPublicDto(
+        this,
+        mentorId?.let { id -> userProvider.getById(id) },
+        studentId?.let { id -> userProvider.getById(id) }
     )
 
     @Transactional

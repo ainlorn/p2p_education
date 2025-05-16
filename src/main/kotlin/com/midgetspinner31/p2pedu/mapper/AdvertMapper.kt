@@ -4,6 +4,7 @@ import com.midgetspinner31.p2pedu.db.entity.Advert
 import com.midgetspinner31.p2pedu.db.entity.AdvertTopic
 import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.AdvertDto
+import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
 import org.springframework.stereotype.Component
@@ -31,6 +32,21 @@ class AdvertMapper(
                 responseCount,
                 createdOn,
                 updatedOn
+            )
+        }
+    }
+
+    fun toPublicDto(advert: Advert, mentor: User?, student: User?): AdvertPublicDto {
+        val mentorDto = mentor?.let { userMapper.toPublicDto(it) }
+        val studentDto = student?.let { userMapper.toPublicDto(it) }
+        advert.apply {
+            return@toPublicDto AdvertPublicDto(
+                id,
+                if (type == AdvertType.MENTOR) mentorDto else studentDto,
+                title,
+                description,
+                status,
+                type
             )
         }
     }

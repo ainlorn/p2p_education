@@ -5,6 +5,7 @@ import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.UserDto
 import com.midgetspinner31.p2pedu.dto.UserProfileDto
+import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.mapper.UserMapper
 import com.midgetspinner31.p2pedu.sso.service.SsoAdminService
@@ -29,6 +30,10 @@ class UserServiceImpl(
 
     override fun getProfileInfo(userId: UUID): UserProfileDto {
         return userMapper.toProfileDto(userProvider.getById(userId))
+    }
+
+    override fun getPublicInfo(userId: UUID): UserPublicDto {
+        return userMapper.toPublicDto(userProvider.getById(userId))
     }
 
     @Transactional
