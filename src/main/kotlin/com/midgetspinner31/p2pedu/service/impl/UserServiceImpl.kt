@@ -11,6 +11,7 @@ import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.mapper.UserMapper
 import com.midgetspinner31.p2pedu.sso.service.SsoAdminService
 import com.midgetspinner31.p2pedu.service.UserService
+import com.midgetspinner31.p2pedu.service.WordFilterService
 import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
 import com.midgetspinner31.p2pedu.web.request.UpdateProfileRequest
 import org.springframework.security.oauth2.jwt.JwtDecoder
@@ -24,7 +25,8 @@ class UserServiceImpl(
     private val userProvider: UserProvider,
     private val userMapper: UserMapper,
     private val ssoAdminService: SsoAdminService,
-    private val reviewProvider: ReviewProvider
+    private val reviewProvider: ReviewProvider,
+    private val wordFilterService: WordFilterService
 ) : UserService {
     override fun getFullInfo(userId: UUID): UserDto {
         return userMapper.toDto(userProvider.getById(userId))
@@ -51,6 +53,7 @@ class UserServiceImpl(
     @Transactional
     override fun updateProfile(userId: UUID, request: UpdateProfileRequest): UserDto {
         val user = userProvider.getById(userId)
+        wordFilterService.checkString(request.description)
         user.description = request.description!!
         return userMapper.toDto(userProvider.save(user))
     }

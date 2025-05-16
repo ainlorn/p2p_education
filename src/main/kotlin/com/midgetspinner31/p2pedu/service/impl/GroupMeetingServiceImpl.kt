@@ -8,6 +8,7 @@ import com.midgetspinner31.p2pedu.mapper.GroupMeetingMapper
 import com.midgetspinner31.p2pedu.service.GroupMeetingService
 import com.midgetspinner31.p2pedu.service.MeetingService
 import com.midgetspinner31.p2pedu.service.UserService
+import com.midgetspinner31.p2pedu.service.WordFilterService
 import com.midgetspinner31.p2pedu.web.request.CreateGroupMeetingRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,7 +23,8 @@ class GroupMeetingServiceImpl(
     private val userService: UserService,
     private val groupMeetingProvider: GroupMeetingProvider,
     private val meetingService: MeetingService,
-    private val groupMeetingMapper: GroupMeetingMapper
+    private val groupMeetingMapper: GroupMeetingMapper,
+    private val wordFilterService: WordFilterService
 ) : GroupMeetingService {
 
     override fun canCreateGroupMeeting(userId: UUID): Boolean {
@@ -39,6 +41,9 @@ class GroupMeetingServiceImpl(
     @Transactional
     override fun createGroupMeeting(userId: UUID, request: CreateGroupMeetingRequest): GroupMeetingDto {
         val user = userProvider.getById(userId)
+
+        wordFilterService.checkString(request.title)
+        wordFilterService.checkString(request.description)
 
         val meeting = meetingService.createMeeting(null, request.title!!)
         var groupMeeting = groupMeetingMapper.toGroupMeeting(user.id, UUID.fromString(meeting.id), request)
@@ -66,6 +71,10 @@ class GroupMeetingServiceImpl(
     @Transactional
     override fun updateGroupMeeting(groupMeetingId: UUID, request: CreateGroupMeetingRequest): GroupMeetingDto {
         var groupMeeting = groupMeetingProvider.getById(groupMeetingId)
+
+        wordFilterService.checkString(request.title)
+        wordFilterService.checkString(request.description)
+
         groupMeeting.apply {
             request.let {
                 this.title = it.title!!

@@ -12,6 +12,7 @@ import com.midgetspinner31.p2pedu.exception.AdvertNotInProgressException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.service.AdvertService
 import com.midgetspinner31.p2pedu.service.UserService
+import com.midgetspinner31.p2pedu.service.WordFilterService
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
 import com.midgetspinner31.p2pedu.web.request.UpdateAdvertRequest
 import org.springframework.data.domain.Page
@@ -30,7 +31,8 @@ class AdvertServiceImpl(
     private val userService: UserService,
     private val subjectProvider: SubjectProvider,
     private val subjectTopicProvider: SubjectTopicProvider,
-    private val advertMapper: AdvertMapper
+    private val advertMapper: AdvertMapper,
+    private val wordFilterService: WordFilterService
 ) : AdvertService {
     override fun canCreateAdvert(userId: UUID): Boolean {
         val user = userProvider.getById(userId)
@@ -50,6 +52,9 @@ class AdvertServiceImpl(
     override fun createAdvert(userId: UUID, request: CreateAdvertRequest): AdvertDto {
         val user = userProvider.getById(userId)
         val subject = subjectProvider.getById(request.subjectId!!)
+
+        wordFilterService.checkString(request.title)
+        wordFilterService.checkString(request.description)
 
         var advert = advertMapper.toAdvert(user.id, request)
         advert = advertProvider.save(advert)
@@ -96,6 +101,9 @@ class AdvertServiceImpl(
         if (advert.status != AdvertStatus.ACTIVE) {
             throw AdvertNotActiveException()
         }
+
+        wordFilterService.checkString(request.title)
+        wordFilterService.checkString(request.description)
 
         advertTopicProvider.deleteAllByAdvertId(advert.id)
         advertTopicProvider.flush()

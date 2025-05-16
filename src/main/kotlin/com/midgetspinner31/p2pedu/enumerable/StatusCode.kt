@@ -55,6 +55,9 @@ enum class StatusCode(val code: Int, val httpCode: Int, val message: String?) {
 
     // reviews
     REVIEW_NOT_FOUND(900, 404, "Отзыв не найден"),
-    REVIEW_ALREADY_EXISTS(901, 400, "Отзыв на это объявление уже написан")
+    REVIEW_ALREADY_EXISTS(901, 400, "Отзыв на это объявление уже написан"),
+
+    // word filter
+    WORD_FILTER(1000, 400, "В тексте содержатся запрещенные слова")
 
 }

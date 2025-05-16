@@ -7,6 +7,7 @@ import com.midgetspinner31.p2pedu.dto.MessageCreateDto
 import com.midgetspinner31.p2pedu.dto.message.UserMessageContent
 import com.midgetspinner31.p2pedu.enumerable.ChatMessageType
 import com.midgetspinner31.p2pedu.service.ChatService
+import com.midgetspinner31.p2pedu.service.WordFilterService
 import com.midgetspinner31.p2pedu.util.AuthUtils
 import com.midgetspinner31.p2pedu.web.annotation.ApiV1
 import com.midgetspinner31.p2pedu.web.request.SendMessageRequest
@@ -25,7 +26,8 @@ import java.util.UUID
 
 @ApiV1
 class ChatController(
-    private val chatService: ChatService
+    private val chatService: ChatService,
+    private val wordFilterService: WordFilterService
 ) {
 
     @GetMapping("/chats/{id}")
@@ -48,6 +50,7 @@ class ChatController(
         @PathVariable chatId: UUID,
         @Valid @RequestBody request: SendMessageRequest
     ): ItemResponse<ChatMessageDto> {
+        wordFilterService.checkString(request.text)
         return ItemResponse(
             chatService.sendMessage(
                 AuthUtils.getUserId(),

@@ -14,10 +14,7 @@ import com.midgetspinner31.p2pedu.exception.AdvertResponseAcceptedException
 import com.midgetspinner31.p2pedu.exception.AlreadyRespondedException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.mapper.AdvertResponseMapper
-import com.midgetspinner31.p2pedu.service.AdvertResponseService
-import com.midgetspinner31.p2pedu.service.AdvertService
-import com.midgetspinner31.p2pedu.service.ChatService
-import com.midgetspinner31.p2pedu.service.UserService
+import com.midgetspinner31.p2pedu.service.*
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertResponseRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -32,7 +29,8 @@ class AdvertResponseServiceImpl(
     private val advertResponseProvider: AdvertResponseProvider,
     private val advertMapper: AdvertMapper,
     private val advertResponseMapper: AdvertResponseMapper,
-    private val chatService: ChatService
+    private val chatService: ChatService,
+    private val wordFilterService: WordFilterService
 ) : AdvertResponseService {
     override fun canCreateAdvertResponse(userId: UUID, advertId: UUID): Boolean {
         val user = userProvider.getById(userId)
@@ -86,6 +84,8 @@ class AdvertResponseServiceImpl(
         if (advertResponseProvider.existsByAdvertIdAndRespondentId(advertId, respondentId)) {
             throw AlreadyRespondedException()
         }
+
+        wordFilterService.checkString(request.description)
 
         var advertResponse = advertResponseMapper.toAdvertResponse(advertId, respondentId, request)
         advertResponse = advertResponseProvider.save(advertResponse)
