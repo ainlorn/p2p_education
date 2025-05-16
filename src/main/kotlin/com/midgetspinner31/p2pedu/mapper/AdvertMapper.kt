@@ -2,21 +2,17 @@ package com.midgetspinner31.p2pedu.mapper
 
 import com.midgetspinner31.p2pedu.db.entity.Advert
 import com.midgetspinner31.p2pedu.db.entity.AdvertTopic
-import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.AdvertDto
 import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
+import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class AdvertMapper(
-    private val userMapper: UserMapper,
-) {
-    fun toDto(advert: Advert, advertTopics: List<AdvertTopic>, mentor: User?, student: User?, responseCount: Int): AdvertDto {
-        val mentorDto = mentor?.let { userMapper.toPublicDto(it) }
-        val studentDto = student?.let { userMapper.toPublicDto(it) }
+class AdvertMapper {
+    fun toDto(advert: Advert, advertTopics: List<AdvertTopic>, mentorDto: UserPublicDto?, studentDto: UserPublicDto?, responseCount: Int): AdvertDto {
         advert.apply {
             return@toDto AdvertDto(
                 id,
@@ -36,9 +32,7 @@ class AdvertMapper(
         }
     }
 
-    fun toPublicDto(advert: Advert, mentor: User?, student: User?): AdvertPublicDto {
-        val mentorDto = mentor?.let { userMapper.toPublicDto(it) }
-        val studentDto = student?.let { userMapper.toPublicDto(it) }
+    fun toPublicDto(advert: Advert, mentorDto: UserPublicDto?, studentDto: UserPublicDto?): AdvertPublicDto {
         advert.apply {
             return@toPublicDto AdvertPublicDto(
                 id,

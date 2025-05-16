@@ -33,7 +33,8 @@ class ChatServiceImpl(
     private val chatMessageProvider: ChatMessageProvider,
     private val chatParticipantProvider: ChatParticipantProvider,
     private val chatMapper: ChatMapper,
-    private val meetingService: MeetingService
+    private val meetingService: MeetingService,
+    private val userService: UserServiceImpl
 ) : ChatService {
 
     override fun hasAccessToChat(userId: UUID, chatId: UUID): Boolean {
@@ -59,14 +60,14 @@ class ChatServiceImpl(
             this.userId = it
         }) }
 
-        return chatMapper.toDto(chat, participantUsers)
+        return chatMapper.toDto(chat, participantUsers.map { userService.getPublicInfo(it.id) })
     }
 
     override fun getChat(chatId: UUID): ChatDto {
         val chat = chatProvider.getById(chatId)
         val participants = chatParticipantProvider.findAllByChatId(chatId)
 
-        return chatMapper.toDto(chat, participants.map { userProvider.getById(it.userId) })
+        return chatMapper.toDto(chat, participants.map { userService.getPublicInfo(it.id) })
     }
 
     override fun getUserChats(userId: UUID): List<ChatDto> {
@@ -74,7 +75,7 @@ class ChatServiceImpl(
         val chats = chatProvider.findAllByUserId(user.id)
         return chats.map {
             chatMapper.toDto(it, chatParticipantProvider.findAllByChatId(it.id).map {
-                p -> userProvider.getById(p.userId)
+                p -> userService.getPublicInfo(p.userId)
             })
         }
     }

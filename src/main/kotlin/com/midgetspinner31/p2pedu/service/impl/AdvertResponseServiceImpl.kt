@@ -67,7 +67,7 @@ class AdvertResponseServiceImpl(
     override fun getAdvertResponse(advertId: UUID, advertResponseId: UUID): AdvertResponseDto {
         val advertResponse = advertResponseProvider.getByAdvertIdAndId(advertId, advertResponseId)
         val respondent = userProvider.getById(advertResponse.respondentId)
-        return advertResponseMapper.toDto(advertResponse, respondent)
+        return advertResponseMapper.toDto(advertResponse, userService.getPublicInfo(respondent.id))
     }
 
     @Transactional
@@ -105,7 +105,7 @@ class AdvertResponseServiceImpl(
 
         advertResponse.chatId = chat.id
 
-        return advertResponseMapper.toDto(advertResponse, respondent)
+        return advertResponseMapper.toDto(advertResponse, userService.getPublicInfo(respondent.id))
     }
 
     @Transactional
@@ -122,7 +122,7 @@ class AdvertResponseServiceImpl(
     override fun getResponsesForAdvert(advertId: UUID): List<AdvertResponseDto> {
         val advert = advertProvider.getById(advertId)
         val responses = advertResponseProvider.findAllByAdvertId(advertId)
-        return responses.map { advertResponseMapper.toDto(it, userProvider.getById(it.respondentId)) }
+        return responses.map { advertResponseMapper.toDto(it, userService.getPublicInfo(it.respondentId)) }
     }
 
     override fun getActiveResponsesForUser(userId: UUID): List<AdvertWithResponseDto> {
@@ -130,7 +130,7 @@ class AdvertResponseServiceImpl(
         val responses = advertResponseProvider.findActiveByRespondentId(userId)
         return responses.map { AdvertWithResponseDto(
             advertService.getAdvert(it.advertId),
-            advertResponseMapper.toDto(it, userProvider.getById(it.respondentId))
+            advertResponseMapper.toDto(it, userService.getPublicInfo(it.respondentId))
         ) }
     }
 
@@ -150,6 +150,6 @@ class AdvertResponseServiceImpl(
             advert.mentorId = response.respondentId
         }
 
-        return advertResponseMapper.toDto(response, userProvider.getById(response.respondentId))
+        return advertResponseMapper.toDto(response, userService.getPublicInfo(response.respondentId))
     }
 }

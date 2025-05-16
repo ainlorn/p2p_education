@@ -9,6 +9,7 @@ import com.midgetspinner31.p2pedu.exception.AlreadyAppliedException
 import com.midgetspinner31.p2pedu.exception.MentorApplicationAlreadyProcessedException
 import com.midgetspinner31.p2pedu.mapper.MentorApplicationMapper
 import com.midgetspinner31.p2pedu.service.MentorApplicationService
+import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.MentorApplyRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,6 +21,7 @@ class MentorApplicationServiceImpl(
     private val userProvider: UserProvider,
     private val mentorApplicationProvider: MentorApplicationProvider,
     private val mentorApplicationMapper: MentorApplicationMapper,
+    private val userService: UserService,
 ) : MentorApplicationService {
     override fun canApply(userId: UUID): Boolean {
         val user = userProvider.getById(userId)
@@ -38,7 +40,7 @@ class MentorApplicationServiceImpl(
 
     override fun getApplicationsByState(state: MentorApplicationState): List<MentorApplicationDto> {
         val applications = mentorApplicationProvider.findAllByState(state)
-        return applications.map { mentorApplicationMapper.toDto(it, userProvider.getById(it.studentId)) }
+        return applications.map { mentorApplicationMapper.toDto(it, userService.getPublicInfo(it.studentId)) }
     }
 
     @Transactional
@@ -52,7 +54,7 @@ class MentorApplicationServiceImpl(
         var mentorApplication = mentorApplicationMapper.toMentorApplication(userId, request)
         mentorApplication = mentorApplicationProvider.save(mentorApplication)
 
-        return mentorApplicationMapper.toDto(mentorApplication, user)
+        return mentorApplicationMapper.toDto(mentorApplication, userService.getPublicInfo(user.id))
     }
 
     @Transactional
@@ -72,7 +74,7 @@ class MentorApplicationServiceImpl(
         user.isMentor = true
         user = userProvider.save(user)
 
-        return mentorApplicationMapper.toDto(mentorApplication, user)
+        return mentorApplicationMapper.toDto(mentorApplication, userService.getPublicInfo(user.id))
     }
 
     @Transactional
@@ -89,6 +91,6 @@ class MentorApplicationServiceImpl(
         mentorApplication.updatedOn = OffsetDateTime.now()
         mentorApplication = mentorApplicationProvider.save(mentorApplication)
 
-        return mentorApplicationMapper.toDto(mentorApplication, user)
+        return mentorApplicationMapper.toDto(mentorApplication, userService.getPublicInfo(user.id))
     }
 }

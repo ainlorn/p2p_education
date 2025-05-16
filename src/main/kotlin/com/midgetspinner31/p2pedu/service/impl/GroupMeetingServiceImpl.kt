@@ -7,6 +7,7 @@ import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.mapper.GroupMeetingMapper
 import com.midgetspinner31.p2pedu.service.GroupMeetingService
 import com.midgetspinner31.p2pedu.service.MeetingService
+import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.CreateGroupMeetingRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -18,6 +19,7 @@ import java.util.*
 @Service("groupMeetingService")
 class GroupMeetingServiceImpl(
     private val userProvider: UserProvider,
+    private val userService: UserService,
     private val groupMeetingProvider: GroupMeetingProvider,
     private val meetingService: MeetingService,
     private val groupMeetingMapper: GroupMeetingMapper
@@ -42,23 +44,23 @@ class GroupMeetingServiceImpl(
         var groupMeeting = groupMeetingMapper.toGroupMeeting(user.id, UUID.fromString(meeting.id), request)
         groupMeeting = groupMeetingProvider.save(groupMeeting)
 
-        return groupMeetingMapper.toDto(groupMeeting, user)
+        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(user.id))
     }
 
     override fun getUpcomingGroupMeetings(pageable: Pageable): Page<GroupMeetingDto> {
         return groupMeetingProvider
             .findAllByEndDtAfter(OffsetDateTime.now(), pageable)
-            .map { groupMeetingMapper.toDto(it, userProvider.getById(it.creatorId)) }
+            .map { groupMeetingMapper.toDto(it, userService.getPublicInfo(it.creatorId)) }
     }
 
     override fun getGroupMeeting(groupMeetingId: UUID): GroupMeetingDto {
         val groupMeeting = groupMeetingProvider.getById(groupMeetingId)
-        return groupMeetingMapper.toDto(groupMeeting, userProvider.getById(groupMeeting.creatorId))
+        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(groupMeeting.creatorId))
     }
 
     override fun getUserGroupMeeting(userId: UUID): List<GroupMeetingDto> {
         val user = userProvider.getById(userId)
-        return groupMeetingProvider.findAllByCreatorId(user.id).map { groupMeetingMapper.toDto(it, user) }
+        return groupMeetingProvider.findAllByCreatorId(user.id).map { groupMeetingMapper.toDto(it, userService.getPublicInfo(user.id)) }
     }
 
     @Transactional
@@ -74,7 +76,7 @@ class GroupMeetingServiceImpl(
         }
         groupMeeting = groupMeetingProvider.save(groupMeeting)
 
-        return groupMeetingMapper.toDto(groupMeeting, userProvider.getById(groupMeeting.creatorId))
+        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(groupMeeting.creatorId))
     }
 
     @Transactional

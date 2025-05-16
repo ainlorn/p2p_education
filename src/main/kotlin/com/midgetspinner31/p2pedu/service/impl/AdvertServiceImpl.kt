@@ -11,6 +11,7 @@ import com.midgetspinner31.p2pedu.exception.AdvertNotActiveException
 import com.midgetspinner31.p2pedu.exception.AdvertNotInProgressException
 import com.midgetspinner31.p2pedu.mapper.AdvertMapper
 import com.midgetspinner31.p2pedu.service.AdvertService
+import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertRequest
 import com.midgetspinner31.p2pedu.web.request.UpdateAdvertRequest
 import org.springframework.data.domain.Page
@@ -26,6 +27,7 @@ class AdvertServiceImpl(
     private val advertResponseProvider: AdvertResponseProvider,
     private val advertTopicProvider: AdvertTopicProvider,
     private val userProvider: UserProvider,
+    private val userService: UserService,
     private val subjectProvider: SubjectProvider,
     private val subjectTopicProvider: SubjectTopicProvider,
     private val advertMapper: AdvertMapper
@@ -128,15 +130,15 @@ class AdvertServiceImpl(
     private fun Advert.toAdvertDto() = advertMapper.toDto(
         this,
         advertTopicProvider.findByAdvertId(id),
-        mentorId?.let { id -> userProvider.getById(id) },
-        studentId?.let { id -> userProvider.getById(id) },
+        mentorId?.let { id -> userService.getPublicInfo(id) },
+        studentId?.let { id -> userService.getPublicInfo(id) },
         advertResponseProvider.countByAdvertId(id)
     )
 
     private fun Advert.toPublicDto() = advertMapper.toPublicDto(
         this,
-        mentorId?.let { id -> userProvider.getById(id) },
-        studentId?.let { id -> userProvider.getById(id) }
+        mentorId?.let { id -> userService.getPublicInfo(id) },
+        studentId?.let { id -> userService.getPublicInfo(id) }
     )
 
     @Transactional

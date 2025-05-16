@@ -1,21 +1,19 @@
 package com.midgetspinner31.p2pedu.mapper
 
 import com.midgetspinner31.p2pedu.db.entity.GroupMeeting
-import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.GroupMeetingDto
+import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.web.request.CreateGroupMeetingRequest
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class GroupMeetingMapper(
-    private val userMapper: UserMapper
-) {
-    fun toDto(groupMeeting: GroupMeeting, creator: User): GroupMeetingDto {
+class GroupMeetingMapper {
+    fun toDto(groupMeeting: GroupMeeting, creator: UserPublicDto): GroupMeetingDto {
         groupMeeting.apply {
             return@toDto GroupMeetingDto(
                 id,
-                userMapper.toPublicDto(creator),
+                creator,
                 title,
                 description,
                 startDt,

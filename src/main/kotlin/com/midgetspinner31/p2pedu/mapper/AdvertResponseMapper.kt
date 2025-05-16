@@ -1,16 +1,14 @@
 package com.midgetspinner31.p2pedu.mapper
 
 import com.midgetspinner31.p2pedu.db.entity.AdvertResponse
-import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.AdvertResponseDto
+import com.midgetspinner31.p2pedu.dto.UserPublicDto
 import com.midgetspinner31.p2pedu.web.request.CreateAdvertResponseRequest
 import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class AdvertResponseMapper(
-    private val userMapper: UserMapper,
-) {
+class AdvertResponseMapper {
     fun toAdvertResponse(advertId: UUID, respondentId: UUID, request: CreateAdvertResponseRequest): AdvertResponse {
         return AdvertResponse().apply {
             this.advertId = advertId
@@ -19,11 +17,11 @@ class AdvertResponseMapper(
         }
     }
 
-    fun toDto(advertResponse: AdvertResponse, respondent: User): AdvertResponseDto {
+    fun toDto(advertResponse: AdvertResponse, respondent: UserPublicDto): AdvertResponseDto {
         advertResponse.apply {
             return@toDto AdvertResponseDto(
                 id,
-                userMapper.toPublicDto(respondent),
+                respondent,
                 description,
                 createdOn,
                 chatId,
