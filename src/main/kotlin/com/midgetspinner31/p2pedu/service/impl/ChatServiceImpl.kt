@@ -67,7 +67,7 @@ class ChatServiceImpl(
         val chat = chatProvider.getById(chatId)
         val participants = chatParticipantProvider.findAllByChatId(chatId)
 
-        return chatMapper.toDto(chat, participants.map { userService.getPublicInfo(it.id) })
+        return chatMapper.toDto(chat, participants.map { userService.getPublicInfo(it.userId) })
     }
 
     override fun getUserChats(userId: UUID): List<ChatDto> {
