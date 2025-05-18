@@ -46,4 +46,12 @@ interface AdvertRepository : JpaRepository<Advert, UUID> {
         nativeQuery = true
     )
     fun findAdvertByChatId(chatId: UUID): Advert?
+
+    @Query(
+        "select a.* from adverts a left join reviews r on a.id = r.advert_id and a.mentor_id = r.reviewer_id where r.id is null and a.mentor_id = :userId and a.status='FINISHED' " +
+        "union " +
+        "select a.* from adverts a left join reviews r on a.id = r.advert_id and a.student_id = r.reviewer_id where r.id is null and a.student_id = :userId and a.status='FINISHED'",
+        nativeQuery = true
+    )
+    fun findAdvertsWithoutReviewByUser(userId: UUID): List<Advert>
 }

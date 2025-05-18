@@ -1,5 +1,6 @@
 package com.midgetspinner31.p2pedu.service
 
+import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
 import com.midgetspinner31.p2pedu.dto.ReviewDto
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import com.midgetspinner31.p2pedu.web.request.CreateReviewRequest

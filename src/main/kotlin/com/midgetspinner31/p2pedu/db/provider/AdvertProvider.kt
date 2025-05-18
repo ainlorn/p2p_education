@@ -47,4 +47,8 @@ class AdvertProvider(
     fun findAdvertByChatId(chatId: UUID): Advert? {
         return repository.findAdvertByChatId(chatId)
     }
+
+    fun findAdvertsWithoutReviewByUser(userId: UUID): List<Advert> {
+        return repository.findAdvertsWithoutReviewByUser(userId)
+    }
 }

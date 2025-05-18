@@ -160,4 +160,8 @@ class AdvertServiceImpl(
         advert.status = AdvertStatus.FINISHED
         return advert.toAdvertDto()
     }
+
+    override fun getAdvertsWithoutReviewByUser(userId: UUID): List<AdvertPublicDto> {
+        return advertProvider.findAdvertsWithoutReviewByUser(userId).map { it.toPublicDto() }
+    }
 }

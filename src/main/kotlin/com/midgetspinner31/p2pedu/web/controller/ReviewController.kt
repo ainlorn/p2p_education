@@ -1,8 +1,10 @@
 package com.midgetspinner31.p2pedu.web.controller
 
+import com.midgetspinner31.p2pedu.dto.AdvertPublicDto
 import com.midgetspinner31.p2pedu.dto.ReviewDto
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import com.midgetspinner31.p2pedu.service.ReviewService
+import com.midgetspinner31.p2pedu.service.impl.AdvertServiceImpl
 import com.midgetspinner31.p2pedu.util.AuthUtils
 import com.midgetspinner31.p2pedu.web.annotation.ApiV1
 import com.midgetspinner31.p2pedu.web.request.CreateReviewRequest
@@ -22,7 +24,8 @@ import java.util.*
 
 @ApiV1
 class ReviewController(
-    private val reviewService: ReviewService
+    private val reviewService: ReviewService,
+    private val advertService: AdvertServiceImpl
 ) {
 
     @PostMapping("/adverts/{advertId}/reviews")
@@ -62,5 +65,11 @@ class ReviewController(
     @Operation(summary = "Получение отзывов, написанных текущим пользователем")
     fun getReviewsFromUser(@RequestParam(required = false) type: ReviewType?): ListResponse<ReviewDto> {
         return ListResponse(reviewService.getReviewsFromUser(AuthUtils.getUserId(), type))
+    }
+
+    @GetMapping("/me/adverts/without-review")
+    @Operation(summary = "Получение списка объявлений, по которым текущий пользователь еще не оставил отзыв")
+    fun getMyAdvertsWithoutReview(): ListResponse<AdvertPublicDto> {
+        return ListResponse(advertService.getAdvertsWithoutReviewByUser(AuthUtils.getUserId()))
     }
 }

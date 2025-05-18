@@ -14,6 +14,7 @@ import com.midgetspinner31.p2pedu.service.ReviewService
 import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.web.request.CreateReviewRequest
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service("reviewService")
@@ -52,6 +53,7 @@ class ReviewServiceImpl(
         return reviewProvider.getById(reviewId).toDto()
     }
 
+    @Transactional
     override fun createReview(userId: UUID, advertId: UUID, request: CreateReviewRequest): ReviewDto {
         val user = userProvider.getById(userId)
         val advert = advertService.getAdvert(advertId)
@@ -80,6 +82,7 @@ class ReviewServiceImpl(
         return review.toDto()
     }
 
+    @Transactional
     override fun deleteReview(reviewId: UUID) {
         val review = reviewProvider.getById(reviewId)
         reviewProvider.delete(review)
