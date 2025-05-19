@@ -29,7 +29,7 @@ class UserServiceImpl(
     private val wordFilterService: WordFilterService
 ) : UserService {
     override fun getFullInfo(userId: UUID): UserDto {
-        return userMapper.toDto(userProvider.getById(userId))
+        return userMapper.toDto(userProvider.getById(userId), reviewProvider.getAverageRatingByRevieweeId(userId))
     }
 
     override fun getProfileInfo(userId: UUID): UserProfileDto {

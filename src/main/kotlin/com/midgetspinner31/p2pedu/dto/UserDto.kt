@@ -27,5 +27,7 @@ data class UserDto(
     /** Курс **/
     var course: Int?,
     /** О себе **/
-    var description: String
+    var description: String,
+    /** Средняя оценка **/
+    var rating: Double?
 )

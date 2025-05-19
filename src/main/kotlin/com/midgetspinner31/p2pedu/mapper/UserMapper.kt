@@ -62,11 +62,11 @@ class UserMapper {
         }
     }
 
-    fun toDto(user: User): UserDto {
+    fun toDto(user: User, rating: Double? = null): UserDto {
         user.apply {
             return@toDto UserDto(
                 id, username, email, role, isMentor, firstName,
-                lastName, middleName, university, faculty, course, description
+                lastName, middleName, university, faculty, course, description, rating
             )
         }
     }
