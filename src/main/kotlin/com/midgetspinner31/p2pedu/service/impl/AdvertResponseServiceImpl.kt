@@ -148,6 +148,8 @@ class AdvertResponseServiceImpl(
 
         if (advert.type == AdvertType.STUDENT) {
             advert.mentorId = response.respondentId
+        } else if (advert.type == AdvertType.MENTOR) {
+            advert.studentId = response.respondentId
         }
 
         return advertResponseMapper.toDto(response, userService.getPublicInfo(response.respondentId))

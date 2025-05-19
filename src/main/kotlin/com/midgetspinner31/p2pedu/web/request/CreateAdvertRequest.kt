@@ -3,6 +3,7 @@ package com.midgetspinner31.p2pedu.web.request
 import com.midgetspinner31.p2pedu.enumerable.AdvertType
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Size
 import java.util.*
 
 class CreateAdvertRequest(
@@ -13,6 +14,7 @@ class CreateAdvertRequest(
     type: AdvertType?
 ) : ApiRequest() {
     @NotEmpty
+    @Size(min = 2, max = 128)
     var title = trim(title)
         set(value) { field = trim(value) }
 
