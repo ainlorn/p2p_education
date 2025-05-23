@@ -23,27 +23,27 @@ class RegistrationRequest(
     var email = trim(email)
         set(value) { field = trim(value) }
 
-    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z]{1,64}$")
+    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z- ]{1,128}$")
     @NotEmpty
     var firstName = trim(firstName)
         set(value) { field = trim(value) }
 
-    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z]{1,64}$")
+    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z- ]{1,128}$")
     @NotEmpty
     var lastName = trim(lastName)
         set(value) { field = trim(value) }
 
-    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z]{1,64}$")
+    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z- ]{1,128}$")
     @NotEmpty
     var middleName = trim(middleName)
         set(value) { field = trim(value) }
 
-    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z0-9\"'. ]{1,256}$")
+    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z0-9\"«»'. -]{1,256}$")
     @NotEmpty
     var university = trim(university)
         set(value) { field = trim(value) }
 
-    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z0-9\"'. ]{1,256}$")
+    @Pattern(regexp = "^[а-яА-Я-ёЁa-zA-Z0-9\"«»'. -]{1,256}$")
     @NotEmpty
     var faculty = trim(faculty)
         set(value) { field = trim(value) }
