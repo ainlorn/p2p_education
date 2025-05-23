@@ -8,6 +8,5 @@ data class UserProfileDto(
     var lastName: String?,
     var middleName: String?,
     var isMentor: Boolean,
-    var description: String,
-    var rating: Double?
+    var description: String
 )

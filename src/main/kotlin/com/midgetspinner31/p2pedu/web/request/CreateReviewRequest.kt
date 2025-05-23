@@ -1,20 +1,17 @@
 package com.midgetspinner31.p2pedu.web.request
 
-import jakarta.validation.constraints.Max
-import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotEmpty
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.*
 
 class CreateReviewRequest(
     text: String?,
-    rating: Int?
+    rating: Set<Int>?
 ) : ApiRequest() {
     @NotEmpty
     var text = trim(text)
         set(value) { field = trim(value) }
 
     @NotNull
-    @Min(1)
-    @Max(5)
-    var rating = rating
+    @Size(min = 1)
+    var rating = rating?.toList()
+
 }

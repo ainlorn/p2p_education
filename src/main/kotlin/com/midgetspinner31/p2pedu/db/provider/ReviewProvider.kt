@@ -35,10 +35,6 @@ class ReviewProvider(
         return repository.findAllByAdvertId(advertId)
     }
 
-    fun getAverageRatingByRevieweeId(revieweeId: UUID): Double? {
-        return repository.getAverageRatingByRevieweeId(revieweeId)
-    }
-
     fun existsByReviewerIdAndAdvertId(reviewerId: UUID, advertId: UUID): Boolean {
         return repository.existsByReviewerIdAndAdvertId(reviewerId, advertId)
     }

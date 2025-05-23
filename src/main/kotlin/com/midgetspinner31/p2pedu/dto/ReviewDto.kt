@@ -13,8 +13,8 @@ data class ReviewDto(
     var reviewee: UserPublicDto,
     /** Объявление, связанное с отзывом **/
     var advert: AdvertPublicDto,
-    /** Количество звёзд (от 1 до 5) **/
-    var rating: Int,
+    /** Оценка (список характеристик) **/
+    var rating: List<Int>,
     /** Тип отзыва (MENTOR - на настиавника, STUDENT - на студента) **/
     var type: ReviewType,
     /** Текст отзыва **/

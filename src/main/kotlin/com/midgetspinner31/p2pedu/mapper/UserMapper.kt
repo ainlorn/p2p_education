@@ -62,27 +62,27 @@ class UserMapper {
         }
     }
 
-    fun toDto(user: User, rating: Double? = null): UserDto {
+    fun toDto(user: User): UserDto {
         user.apply {
             return@toDto UserDto(
                 id, username, email, role, isMentor, firstName,
-                lastName, middleName, university, faculty, course, description, rating
+                lastName, middleName, university, faculty, course, description
             )
         }
     }
 
-    fun toPublicDto(user: User, rating: Double?): UserPublicDto {
+    fun toPublicDto(user: User): UserPublicDto {
         user.apply {
             return@toPublicDto UserPublicDto(
-                id, firstName, lastName, middleName, isMentor, rating
+                id, firstName, lastName, middleName, isMentor
             )
         }
     }
 
-    fun toProfileDto(user: User, rating: Double?): UserProfileDto {
+    fun toProfileDto(user: User): UserProfileDto {
         user.apply {
             return@toProfileDto UserProfileDto(
-                id, firstName, lastName, middleName, isMentor, description, rating
+                id, firstName, lastName, middleName, isMentor, description
             )
         }
     }

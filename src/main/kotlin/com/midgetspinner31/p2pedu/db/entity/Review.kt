@@ -2,6 +2,8 @@ package com.midgetspinner31.p2pedu.db.entity
 
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import jakarta.persistence.*
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -21,8 +23,9 @@ class Review {
     @Column(name = "advert_id", nullable = false)
     lateinit var advertId: UUID
 
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "rating", nullable = false)
-    var rating: Int = 5
+    var rating: List<Int> = mutableListOf()
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
