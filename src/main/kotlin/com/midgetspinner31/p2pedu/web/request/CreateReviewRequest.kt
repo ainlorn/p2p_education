@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*
 
 class CreateReviewRequest(
     text: String?,
-    rating: Set<Int>?
+    rating: List<Int>?
 ) : ApiRequest() {
     @NotEmpty
     var text = trim(text)
@@ -12,6 +12,6 @@ class CreateReviewRequest(
 
     @NotNull
     @Size(min = 1)
-    var rating = rating?.toList()
+    var rating = rating
 
 }
