@@ -5,6 +5,8 @@ import com.midgetspinner31.p2pedu.db.entity.User
 import com.midgetspinner31.p2pedu.dto.UserDto
 import com.midgetspinner31.p2pedu.dto.UserProfileDto
 import com.midgetspinner31.p2pedu.dto.UserPublicDto
+import com.midgetspinner31.p2pedu.dto.review.MentorReviewStats
+import com.midgetspinner31.p2pedu.dto.review.StudentReviewStats
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import com.midgetspinner31.p2pedu.web.request.RegistrationRequest
 import org.keycloak.representations.idm.CredentialRepresentation
@@ -62,11 +64,12 @@ class UserMapper {
         }
     }
 
-    fun toDto(user: User): UserDto {
+    fun toDto(user: User, mentorReviewStats: MentorReviewStats? = null, studentReviewStats: StudentReviewStats? = null): UserDto {
         user.apply {
             return@toDto UserDto(
                 id, username, email, role, isMentor, firstName,
-                lastName, middleName, university, faculty, course, description
+                lastName, middleName, university, faculty, course, description,
+                mentorReviewStats, studentReviewStats
             )
         }
     }
@@ -79,10 +82,10 @@ class UserMapper {
         }
     }
 
-    fun toProfileDto(user: User): UserProfileDto {
+    fun toProfileDto(user: User, mentorReviewStats: MentorReviewStats, studentReviewStats: StudentReviewStats): UserProfileDto {
         user.apply {
             return@toProfileDto UserProfileDto(
-                id, firstName, lastName, middleName, isMentor, description
+                id, firstName, lastName, middleName, isMentor, description, mentorReviewStats, studentReviewStats
             )
         }
     }

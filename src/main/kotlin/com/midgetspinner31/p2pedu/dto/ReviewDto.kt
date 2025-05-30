@@ -1,5 +1,6 @@
 package com.midgetspinner31.p2pedu.dto
 
+import com.midgetspinner31.p2pedu.dto.review.ReviewContent
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import java.time.OffsetDateTime
 import java.util.*
@@ -13,8 +14,8 @@ data class ReviewDto(
     var reviewee: UserPublicDto,
     /** Объявление, связанное с отзывом **/
     var advert: AdvertPublicDto,
-    /** Оценка (список характеристик) **/
-    var rating: List<Int>,
+    /** Оценка (содержимое зависит от роли) **/
+    var content: ReviewContent,
     /** Тип отзыва (MENTOR - на настиавника, STUDENT - на студента) **/
     var type: ReviewType,
     /** Текст отзыва **/

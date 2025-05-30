@@ -1,5 +1,7 @@
 package com.midgetspinner31.p2pedu.dto
 
+import com.midgetspinner31.p2pedu.dto.review.MentorReviewStats
+import com.midgetspinner31.p2pedu.dto.review.StudentReviewStats
 import com.midgetspinner31.p2pedu.enumerable.UserRole
 import java.util.*
 
@@ -27,5 +29,9 @@ data class UserDto(
     /** Курс **/
     var course: Int?,
     /** О себе **/
-    var description: String
+    var description: String,
+    /** Статистика по отзывам (в роли наставника) **/
+    var mentorStats: MentorReviewStats?,
+    /** Статистика по отзывам (в роли студента) **/
+    var studentStats: StudentReviewStats?,
 )

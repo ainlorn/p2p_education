@@ -52,4 +52,5 @@ class AdvertResponseNotAcceptedException : ApiException(StatusCode.ADVERT_RESPON
 class AdvertResponseAcceptedException : ApiException(StatusCode.ADVERT_RESPONSE_ACCEPTED)
 class ReviewNotFoundException : ApiException(StatusCode.REVIEW_NOT_FOUND)
 class ReviewAlreadyExistsException : ApiException(StatusCode.REVIEW_ALREADY_EXISTS)
+class ReviewContentTypeMismatchException : ApiException(StatusCode.REVIEW_CONTENT_TYPE_MISMATCH)
 class WordFilterException : ApiException(StatusCode.WORD_FILTER)

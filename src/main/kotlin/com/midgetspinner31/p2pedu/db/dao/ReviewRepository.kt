@@ -1,6 +1,8 @@
 package com.midgetspinner31.p2pedu.db.dao
 
 import com.midgetspinner31.p2pedu.db.entity.Review
+import com.midgetspinner31.p2pedu.dto.review.MentorReviewStats
+import com.midgetspinner31.p2pedu.dto.review.StudentReviewStats
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
@@ -18,5 +20,9 @@ interface ReviewRepository : JpaRepository<Review, UUID> {
     fun findAllByAdvertId(advertId: UUID): List<Review>
 
     fun existsByReviewerIdAndAdvertId(reviewerId: UUID, advertId: UUID): Boolean
+
+    fun getMentorReviewStats(mentorId: UUID): MentorReviewStats
+
+    fun getStudentReviewStats(studentId: UUID): StudentReviewStats
 
 }

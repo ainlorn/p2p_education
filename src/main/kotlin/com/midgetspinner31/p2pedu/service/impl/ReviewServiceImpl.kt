@@ -4,10 +4,13 @@ import com.midgetspinner31.p2pedu.db.entity.Review
 import com.midgetspinner31.p2pedu.db.provider.ReviewProvider
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.ReviewDto
+import com.midgetspinner31.p2pedu.dto.review.MentorReviewContent
+import com.midgetspinner31.p2pedu.dto.review.StudentReviewContent
 import com.midgetspinner31.p2pedu.enumerable.AdvertStatus
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import com.midgetspinner31.p2pedu.exception.AdvertNotFinishedException
 import com.midgetspinner31.p2pedu.exception.ReviewAlreadyExistsException
+import com.midgetspinner31.p2pedu.exception.ReviewContentTypeMismatchException
 import com.midgetspinner31.p2pedu.mapper.ReviewMapper
 import com.midgetspinner31.p2pedu.service.AdvertService
 import com.midgetspinner31.p2pedu.service.ReviewService
@@ -74,6 +77,11 @@ class ReviewServiceImpl(
         } else {
             revieweeId = advert.mentor!!.id
             type = ReviewType.MENTOR
+        }
+
+        if (!(request.content is MentorReviewContent && type == ReviewType.MENTOR
+            || request.content is StudentReviewContent && type == ReviewType.STUDENT)) {
+            throw ReviewContentTypeMismatchException()
         }
 
         var review = reviewMapper.toReview(userId, revieweeId, type, advert.id, request)

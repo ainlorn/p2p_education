@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component
 import java.util.*
 
 @Component
-class ReviewMapper(
-    private val userMapper: UserMapper
-) {
+class ReviewMapper {
     fun toDto(review: Review, reviewer: UserPublicDto, reviewee: UserPublicDto, advert: AdvertPublicDto): ReviewDto {
         review.apply {
             return@toDto ReviewDto(
@@ -20,7 +18,7 @@ class ReviewMapper(
                 reviewer,
                 reviewee,
                 advert,
-                rating,
+                content,
                 type,
                 text,
                 createdOn
@@ -34,7 +32,7 @@ class ReviewMapper(
                 this.reviewerId = reviewerId
                 this.revieweeId = revieweeId
                 this.advertId = advertId
-                this.rating = it.rating!!
+                this.content = it.content!!
                 this.type = type
                 this.text = request.text!!
             }

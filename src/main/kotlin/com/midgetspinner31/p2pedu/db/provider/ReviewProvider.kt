@@ -2,6 +2,8 @@ package com.midgetspinner31.p2pedu.db.provider
 
 import com.midgetspinner31.p2pedu.db.dao.ReviewRepository
 import com.midgetspinner31.p2pedu.db.entity.Review
+import com.midgetspinner31.p2pedu.dto.review.MentorReviewStats
+import com.midgetspinner31.p2pedu.dto.review.StudentReviewStats
 import com.midgetspinner31.p2pedu.enumerable.ReviewType
 import com.midgetspinner31.p2pedu.exception.ReviewNotFoundException
 import org.springframework.stereotype.Service
@@ -37,6 +39,14 @@ class ReviewProvider(
 
     fun existsByReviewerIdAndAdvertId(reviewerId: UUID, advertId: UUID): Boolean {
         return repository.existsByReviewerIdAndAdvertId(reviewerId, advertId)
+    }
+
+    fun getMentorReviewStats(mentorId: UUID): MentorReviewStats {
+        return repository.getMentorReviewStats(mentorId)
+    }
+
+    fun getStudentReviewStats(studentId: UUID): StudentReviewStats {
+        return repository.getStudentReviewStats(studentId)
     }
 
 }
