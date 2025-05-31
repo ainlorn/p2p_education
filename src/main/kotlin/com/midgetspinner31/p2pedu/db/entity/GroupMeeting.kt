@@ -15,7 +15,7 @@ class GroupMeeting {
     @Column(name = "id", nullable = false)
     var id: UUID = UUID.randomUUID()
 
-    @Column(name = "creator_id")
+    @Column(name = "creator_id", nullable = false)
     lateinit var creatorId: UUID
 
     @Column(name = "meeting_id", nullable = false)

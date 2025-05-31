@@ -16,5 +16,7 @@ interface GroupMeetingService {
     fun updateGroupMeeting(groupMeetingId: UUID, request: CreateGroupMeetingRequest): GroupMeetingDto
     fun deleteGroupMeeting(groupMeetingId: UUID)
     fun joinGroupMeeting(userId: UUID, groupMeetingId: UUID): String
+    fun markAttendance(groupMeetingId: UUID, userId: UUID)
+    fun unmarkAttendance(groupMeetingId: UUID, userId: UUID)
 
 }

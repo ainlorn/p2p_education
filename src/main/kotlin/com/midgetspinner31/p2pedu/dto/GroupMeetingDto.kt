@@ -17,5 +17,9 @@ data class GroupMeetingDto(
     /** Дата и время окончания встречи **/
     var endDt: OffsetDateTime,
     /** Дата и время создания **/
-    var createdOn: OffsetDateTime
+    var createdOn: OffsetDateTime,
+    /** Количество участников **/
+    var attendeeCount: Int,
+    /** Является ли текущий пользователь участником **/
+    var isAttending: Boolean?
 )

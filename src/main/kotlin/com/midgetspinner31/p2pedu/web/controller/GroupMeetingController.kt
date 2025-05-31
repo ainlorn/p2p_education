@@ -16,13 +16,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @ApiV1
@@ -60,6 +54,20 @@ class GroupMeetingController(
     @Operation(summary = "Получение информации о групповом занятии")
     fun getGroupMeeting(@PathVariable id: UUID): ItemResponse<GroupMeetingDto> {
         return ItemResponse(groupMeetingService.getGroupMeeting(id))
+    }
+
+    @PutMapping("/group-meetings/{id}/attend")
+    @Operation(summary = "Добавить отметку о посещении группового занятия")
+    fun markAttendance(@PathVariable id: UUID): EmptyResponse {
+        groupMeetingService.markAttendance(id, AuthUtils.getUserId())
+        return EmptyResponse()
+    }
+
+    @DeleteMapping("/group-meetings/{id}/attend")
+    @Operation(summary = "Снять отметку о посещении группового занятия")
+    fun unmarkAttendance(@PathVariable id: UUID): EmptyResponse {
+        groupMeetingService.unmarkAttendance(id, AuthUtils.getUserId())
+        return EmptyResponse()
     }
 
     @PatchMapping("/group-meetings/{id}")

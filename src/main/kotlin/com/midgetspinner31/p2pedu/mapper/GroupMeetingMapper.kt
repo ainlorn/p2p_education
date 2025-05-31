@@ -9,7 +9,7 @@ import java.util.*
 
 @Component
 class GroupMeetingMapper {
-    fun toDto(groupMeeting: GroupMeeting, creator: UserPublicDto): GroupMeetingDto {
+    fun toDto(groupMeeting: GroupMeeting, creator: UserPublicDto, attendeeCount: Int, isAttending: Boolean? = null): GroupMeetingDto {
         groupMeeting.apply {
             return@toDto GroupMeetingDto(
                 id,
@@ -18,7 +18,9 @@ class GroupMeetingMapper {
                 description,
                 startDt,
                 endDt,
-                createdOn
+                createdOn,
+                attendeeCount,
+                isAttending
             )
         }
     }

@@ -1,5 +1,8 @@
 package com.midgetspinner31.p2pedu.service.impl
 
+import com.midgetspinner31.p2pedu.db.entity.GroupMeeting
+import com.midgetspinner31.p2pedu.db.entity.GroupMeetingAttendance
+import com.midgetspinner31.p2pedu.db.provider.GroupMeetingAttendanceProvider
 import com.midgetspinner31.p2pedu.db.provider.GroupMeetingProvider
 import com.midgetspinner31.p2pedu.db.provider.UserProvider
 import com.midgetspinner31.p2pedu.dto.GroupMeetingDto
@@ -9,6 +12,7 @@ import com.midgetspinner31.p2pedu.service.GroupMeetingService
 import com.midgetspinner31.p2pedu.service.MeetingService
 import com.midgetspinner31.p2pedu.service.UserService
 import com.midgetspinner31.p2pedu.service.WordFilterService
+import com.midgetspinner31.p2pedu.util.AuthUtils
 import com.midgetspinner31.p2pedu.web.request.CreateGroupMeetingRequest
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -22,6 +26,7 @@ class GroupMeetingServiceImpl(
     private val userProvider: UserProvider,
     private val userService: UserService,
     private val groupMeetingProvider: GroupMeetingProvider,
+    private val groupMeetingAttendanceProvider: GroupMeetingAttendanceProvider,
     private val meetingService: MeetingService,
     private val groupMeetingMapper: GroupMeetingMapper,
     private val wordFilterService: WordFilterService
@@ -49,23 +54,25 @@ class GroupMeetingServiceImpl(
         var groupMeeting = groupMeetingMapper.toGroupMeeting(user.id, UUID.fromString(meeting.id), request)
         groupMeeting = groupMeetingProvider.save(groupMeeting)
 
-        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(user.id))
+        markAttendance(groupMeeting.id, userId)
+
+        return groupMeeting.toDto()
     }
 
     override fun getUpcomingGroupMeetings(pageable: Pageable): Page<GroupMeetingDto> {
         return groupMeetingProvider
             .findAllByEndDtAfter(OffsetDateTime.now(), pageable)
-            .map { groupMeetingMapper.toDto(it, userService.getPublicInfo(it.creatorId)) }
+            .map { it.toDto() }
     }
 
     override fun getGroupMeeting(groupMeetingId: UUID): GroupMeetingDto {
         val groupMeeting = groupMeetingProvider.getById(groupMeetingId)
-        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(groupMeeting.creatorId))
+        return groupMeeting.toDto()
     }
 
     override fun getUserGroupMeeting(userId: UUID): List<GroupMeetingDto> {
         val user = userProvider.getById(userId)
-        return groupMeetingProvider.findAllByCreatorId(user.id).map { groupMeetingMapper.toDto(it, userService.getPublicInfo(user.id)) }
+        return groupMeetingProvider.findAllByCreatorId(user.id).map { it.toDto() }
     }
 
     @Transactional
@@ -85,7 +92,7 @@ class GroupMeetingServiceImpl(
         }
         groupMeeting = groupMeetingProvider.save(groupMeeting)
 
-        return groupMeetingMapper.toDto(groupMeeting, userService.getPublicInfo(groupMeeting.creatorId))
+        return groupMeeting.toDto()
     }
 
     @Transactional
@@ -99,5 +106,38 @@ class GroupMeetingServiceImpl(
         val groupMeeting = groupMeetingProvider.getById(groupMeetingId)
 
         return meetingService.getMeetingUrl(user.id, groupMeeting.meetingId)
+    }
+
+    @Transactional
+    override fun markAttendance(groupMeetingId: UUID, userId: UUID) {
+        val user = userProvider.getById(userId)
+        val groupMeeting = groupMeetingProvider.getById(groupMeetingId)
+
+        if (!groupMeetingAttendanceProvider.existsByGroupMeetingIdAndUserId(groupMeeting.id, user.id)) {
+            groupMeetingAttendanceProvider.save(GroupMeetingAttendance().apply {
+                this.groupMeetingId = groupMeeting.id
+                this.userId = user.id
+            })
+        }
+    }
+
+    @Transactional
+    override fun unmarkAttendance(groupMeetingId: UUID, userId: UUID) {
+        val user = userProvider.getById(userId)
+        val groupMeeting = groupMeetingProvider.getById(groupMeetingId)
+
+        if (groupMeetingAttendanceProvider.existsByGroupMeetingIdAndUserId(groupMeeting.id, user.id)) {
+            groupMeetingAttendanceProvider.deleteByGroupMeetingIdAndUserId(groupMeeting.id, user.id)
+        }
+    }
+
+    private fun GroupMeeting.toDto(): GroupMeetingDto {
+        return groupMeetingMapper.toDto(
+            this,
+            userService.getPublicInfo(this.creatorId),
+            groupMeetingAttendanceProvider.countByGroupMeetingId(this.id),
+            AuthUtils.getUserDetailsOrNull()?.id?.let {
+                groupMeetingAttendanceProvider.existsByGroupMeetingIdAndUserId(this.id, it)
+            })
     }
 }
