@@ -8,9 +8,8 @@ class CreateReviewRequest(
     text: String?,
     content: ReviewContent?
 ) : ApiRequest() {
-    @NotEmpty
     var text = trim(text)
-        set(value) { field = trim(value) }
+        set(value) { field = if (value == null) "" else trim(value) }
 
     @NotNull
     @Valid
